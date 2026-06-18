@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - គ្រូបង្រៀន</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: #fafbfc;
+        }
+
+        .navbar {
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .navbar-brand {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        .page-header {
+            background: linear-gradient(145deg, #f0f4ff 0%, #e0e7ff 100%);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        /* Teacher Card Styles */
+        .teacher-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+            border-color: #cbd5e1;
+            background-color: var(--primary-light);
+        }
+
+        .teacher-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 4px solid #eff6ff;
+            animation: avatarFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes avatarFadeIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .teacher-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .teacher-role {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .teacher-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .teacher-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .teacher-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .teacher-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .teacher-social a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 40px auto;
+            position: relative;
+        }
+
+        .search-container .form-control {
+            border-radius: 50px;
+            padding: 12px 20px 12px 45px;
+            border-color: var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        }
+
+        .search-container .bi-search {
+            position: absolute;
+            left: 18px;
+            top: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Animation សម្រាប់សញ្ញាខ្វៀកលោតភ្លឹបភ្លែត (Blinking Cursor) */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .typing-cursor {
+            animation: blink-cursor 1s step-end infinite;
+            color: var(--primary-color);
+        }
+
+        /* ពណ៌ Highlight សម្រាប់ Dark Mode */
+        body.dark-mode .teacher-card:hover {
+            background-color: #334155;
+        }
+    </style>
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+
+    <header class="page-header">
+        <div class="container">
+            <h1 class="fw-bold display-5 text-dark mb-3 reveal-on-scroll text-center">
+                <span id="typingEffectTeachers"></span><span class="typing-cursor">|</span>
+            </h1>
+            <p class="text-muted mb-0 fs-6 max-width-500 mx-auto reveal-on-scroll text-center" style="transition-delay: 100ms;" data-i18n="teachers_desc">
+                ជួបជាមួយគ្រូបង្រៀនជំនាញៗដែលនឹងណែនាំអ្នកក្នុងដំណើរនៃការសិក្សារបស់អ្នក។</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+
+            <!-- ប្រអប់ស្វែងរកគ្រូបង្រៀន -->
+            <div class="search-container reveal-on-scroll" style="transition-delay: 200ms;">
+                <i class="bi bi-search"></i>
+                <input type="text" id="teacherSearchInput" class="form-control"
+                    placeholder="ស្វែងរកឈ្មោះ ឬជំនាញគ្រូបង្រៀន..." data-i18n="search_teachers">
+            </div>
+
+            <!-- ទីតាំងបង្ហាញកាតគ្រូបង្រៀន -->
+            <div class="row g-4" id="teacherGrid">
+                <!-- ទិន្នន័យគ្រូបង្រៀននឹងលោតចូលទីនេះតាមរយៈ JavaScript -->
+            </div>
+
+            <!-- កន្លែងបង្ហាញលេខទំព័រ (Pagination) -->
+            <nav class="mt-5 d-flex justify-content-center" aria-label="Page navigation">
+                <ul class="pagination pagination-lg align-items-center" id="teacherPagination">
+                    <!-- លេខទំព័រនឹងលោតចូលទីនេះតាមរយៈ JavaScript -->
+                </ul>
+            </nav>
+
+        </div>
+    </section>
+
+    <!-- Public Footer Component -->
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+
+    <script>
+        async function initializePage() {
+            const teacherGrid = document.getElementById('teacherGrid');
+            const searchInput = document.getElementById('teacherSearchInput');
+            let teachersDB = [];
+        let currentPage = 1;
+        const itemsPerPage = 8; // បង្ហាញគ្រូបង្រៀន ៨ នាក់ក្នុងមួយទំព័រ
+        let currentSearchTerm = '';
+
+        // វចនានុក្រមបកប្រែសម្រាប់ទំព័រគ្រូបង្រៀន
+        const pageTranslations = {
+            'km': {
+                'teachers_title': 'គ្រូបង្រៀនរបស់យើង', 'teachers_desc': 'ជួបជាមួយគ្រូបង្រៀនជំនាញៗដែលនឹងណែនាំអ្នកក្នុងដំណើរនៃការសិក្សារបស់អ្នក។',
+                'search_teachers': 'ស្វែងរកឈ្មោះ ឬជំនាញគ្រូបង្រៀន...', 'not_found': 'រកមិនឃើញគ្រូបង្រៀនដែលអ្នកស្វែងរកទេ',
+                'not_found_desc': 'យើងមិនអាចស្វែងរកគ្រូបង្រៀនដែលត្រូវនឹងពាក្យគន្លឹះរបស់អ្នកទេ។ សូមសាកល្បងម្ដងទៀត។',
+                'clear_search': 'សម្អាតការស្វែងរក',
+                'rating_label': 'ពិន្ទុ', 'students_label': 'សិស្ស', 'courses_label': 'វគ្គសិក្សា'
+            },
+            'en': {
+                'teachers_title': 'Our Teachers', 'teachers_desc': 'Meet the expert instructors who will guide you on your learning journey.',
+                'search_teachers': 'Search teacher name or role...', 'not_found': 'No teachers found matching your search.',
+                'not_found_desc': 'We couldn\'t find any teachers matching your keywords. Please try again.',
+                'clear_search': 'Clear Search',
+                'rating_label': 'Rating', 'students_label': 'Students', 'courses_label': 'Courses'
+            }
+        };
+
+        // អនុគមន៍សម្រាប់បកប្រែទំព័រទាំងមូល
+        function applyPageTranslations() {
+            const lang = localStorage.getItem('language') || 'km';
+            const t = pageTranslations[lang] || pageTranslations['km'];
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) {
+                    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                        el.placeholder = t[key];
+                    } else {
+                        el.innerHTML = t[key];
+                    }
+                }
+            });
+
+            // មុខងារវាយអក្សរ (Typing Effect) សម្រាប់ចំណងជើង "គ្រូបង្រៀន"
+            const titleSpan = document.getElementById('typingEffectTeachers');
+            if (titleSpan) {
+                const textToType = t['teachers_title'];
+                if (window.teacherTypingTimeout) clearTimeout(window.teacherTypingTimeout);
+                
+                titleSpan.innerHTML = '';
+                let charIndex = 0;
+                function typeWriter() {
+                    if (charIndex < textToType.length) {
+                        titleSpan.innerHTML += textToType.charAt(charIndex);
+                        charIndex++;
+                        window.teacherTypingTimeout = setTimeout(typeWriter, 100); // ល្បឿនវាយអក្សរ
+                    }
+                }
+                setTimeout(typeWriter, 300); // រង់ចាំ 0.3s សិនទើបចាប់ផ្តើមវាយ
+            }
+
+            renderTeachers();
+        }
+        document.addEventListener('languageChanged', applyPageTranslations);
+
+            // មុខងារសម្រាប់ Render កាតគ្រូបង្រៀន
+        function renderTeachers() {
+                if (!teacherGrid) return;
+                
+            // លុប Tooltip ចាស់ៗចេញមុនពេល Render ថ្មីការពារកុំឲ្យជាប់គាំងលើអេក្រង់
+            document.querySelectorAll('.tooltip').forEach(t => t.remove());
+
+            const term = currentSearchTerm.toLowerCase().trim();
+            let filteredTeachers = teachersDB;
+            
+            if (term) {
+                filteredTeachers = teachersDB.filter(teacher =>
+                    teacher.name.toLowerCase().includes(term) ||
+                    teacher.role.toLowerCase().includes(term)
+                );
+            }
+
+            // ការគណនាចំនួនទំព័រ
+            const totalPages = Math.ceil(filteredTeachers.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const visibleTeachers = filteredTeachers.slice(startIndex, startIndex + itemsPerPage);
+
+            const lang = localStorage.getItem('language') || 'km';
+            const tr = (key) => (pageTranslations[lang] && pageTranslations[lang][key]) ? pageTranslations[lang][key] : key;
+
+            teacherGrid.innerHTML = '';
+
+            if (visibleTeachers.length === 0) {
+                teacherGrid.innerHTML = `
+                    <div class="col-12 text-center py-5 fade-in-scale">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/search-not-found-5342748-4468820.png" alt="Not Found" style="width: 180px; margin-bottom: 24px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));">
+                        <h4 class="fw-bold text-dark mb-2">${tr('not_found')}</h4>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 400px; font-size: 15px;">${tr('not_found_desc')}</p>
+                        <button class="btn btn-outline-primary fw-bold px-4 py-2" style="border-radius: 12px; border-width: 2px;" onclick="document.getElementById('teacherSearchInput').value=''; document.getElementById('teacherSearchInput').dispatchEvent(new Event('input'));">
+                            <i class="bi bi-arrow-clockwise me-1"></i> ${tr('clear_search')}
+                        </button>
+                    </div>
+                `;
+                renderPagination(0, 1);
+                    return;
+                }
+
+            visibleTeachers.forEach((teacher, index) => {
+                    teacherGrid.innerHTML += `
+                        <div class="col-sm-6 col-lg-4 col-xl-3 reveal-on-scroll" style="transition-delay: ${index * 50}ms;">
+                            <div class="teacher-card" onclick="window.location.href='teacher-profile.html?id=${teacher.id}'">
+                                <img src="${teacher.img}" alt="${teacher.name}" class="teacher-avatar shadow-sm">
+                                <h3 class="teacher-name">${teacher.name}</h3>
+                                <div class="teacher-role">${teacher.role}</div>
+                                <p class="teacher-desc">${teacher.desc}</p>
+                                
+                                <div class="teacher-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value"><i class="bi bi-star-fill text-warning" style="font-size: 14px;"></i> ${teacher.rating}</div>
+                                    <div class="stat-label">${tr('rating_label')}</div>
+                                    </div>
+                                    <div class="stat-item" data-bs-toggle="tooltip" data-bs-placement="top" title="សិស្សសរុប: ${teacher.students} នាក់">
+                                        <div class="stat-value"><i class="bi bi-people-fill text-primary" style="font-size: 14px;"></i> ${teacher.students}</div>
+                                    <div class="stat-label">${tr('students_label')}</div>
+                                    </div>
+                                    <div class="stat-item" data-bs-toggle="tooltip" data-bs-placement="top" title="វគ្គសិក្សាសរុប: ${teacher.courses} វគ្គ">
+                                        <div class="stat-value"><i class="bi bi-journal-album text-success" style="font-size: 14px;"></i> ${teacher.courses}</div>
+                                    <div class="stat-label">${tr('courses_label')}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="teacher-social">
+                                    <a href="#" onclick="event.stopPropagation()"><i class="bi bi-facebook"></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i class="bi bi-twitter-x"></i></a>
+                                    <a href="#" onclick="event.stopPropagation()"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+            });
+            
+
+            renderPagination(totalPages, currentPage);
+
+            // បញ្ឆេះមុខងារ Tooltip របស់ Bootstrap សម្រាប់កាតថ្មីៗ
+            const tooltipTriggerList = teacherGrid.querySelectorAll('[data-bs-toggle="tooltip"]');
+            [...tooltipTriggerList].forEach(el => {
+                if (typeof bootstrap !== 'undefined') new bootstrap.Tooltip(el, { trigger: 'hover' });
+            });
+
+                // ភ្ជាប់ Animation ទៅនឹងកាតគ្រូបង្រៀនថ្មីៗ
+                setTimeout(() => {
+                    document.querySelectorAll('#teacherGrid .reveal-on-scroll:not(.is-revealed)').forEach(el => {
+                        if (window.scrollObserver) window.scrollObserver.observe(el);
+                        else if (window.globalScrollObserver) window.globalScrollObserver.observe(el);
+                    });
+                }, 100);
+            }
+
+        // មុខងារ Render លេខទំព័រ (Pagination)
+        function renderPagination(totalPages, current) {
+            const paginationContainer = document.getElementById('teacherPagination');
+            if (!paginationContainer) return;
+
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            const prevDisabled = current === 1 ? 'disabled' : '';
+            html += `<li class="page-item ${prevDisabled}"><a class="page-link shadow-sm border-0 fw-bold text-dark mx-1" href="#" data-page="${current - 1}" style="border-radius: 10px;"><i class="bi bi-chevron-left"></i></a></li>`;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = current === i ? 'active' : '';
+                const colorClass = current === i ? 'bg-primary text-white' : 'text-dark';
+                html += `<li class="page-item ${activeClass}"><a class="page-link shadow-sm border-0 fw-bold ${colorClass} mx-1" href="#" data-page="${i}" style="border-radius: 10px;">${i}</a></li>`;
+            }
+
+            const nextDisabled = current === totalPages ? 'disabled' : '';
+            html += `<li class="page-item ${nextDisabled}"><a class="page-link shadow-sm border-0 fw-bold text-dark mx-1" href="#" data-page="${current + 1}" style="border-radius: 10px;"><i class="bi bi-chevron-right"></i></a></li>`;
+
+            paginationContainer.innerHTML = html;
+        }
+
+        // មុខងារចុចលើលេខទំព័រ
+        const paginationContainer = document.getElementById('teacherPagination');
+        if (paginationContainer) {
+            paginationContainer.addEventListener('click', function(e) {
+                e.preventDefault();
+                const link = e.target.closest('.page-link');
+                if (!link) return;
+                
+                const parent = link.closest('.page-item');
+                if (parent.classList.contains('disabled') || parent.classList.contains('active')) return;
+
+                const page = parseInt(link.getAttribute('data-page'));
+                if (page && !isNaN(page)) {
+                    currentPage = page;
+                    renderTeachers();
+                    window.scrollTo({ top: document.getElementById('teacherGrid').offsetTop - 150, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // មុខងារស្វែងរក (Debounce)
+        function debounce(func, delay) {
+            let timeoutId;
+            return function (...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        }
+
+            if (searchInput) {
+            searchInput.addEventListener('input', debounce(function (e) {
+                currentSearchTerm = e.target.value;
+                currentPage = 1;
+                renderTeachers();
+            }, 300));
+            }
+
+            try {
+                // អានទិន្នន័យពី LocalStorage ជាមុនសិន
+                const localTeachers = localStorage.getItem('teachers_db');
+                
+                if (localTeachers) {
+                    teachersDB = JSON.parse(localTeachers);
+                } else {
+                    // ទិន្នន័យបម្រុង (Fallback Data) ក្នុងករណីមិនទាន់មានទិន្នន័យក្នុង LocalStorage
+                    teachersDB = [
+                        { id: 1, name: "John Doe", role: "អ្នកអភិវឌ្ឍន៍គេហទំព័រ", desc: "អ្នកជំនាញផ្នែក Fullstack Development ដែលមានបទពិសោធន៍ជាង ១០ ឆ្នាំ។", rating: 4.8, students: "50k+", courses: 15, img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop" },
+                        { id: 2, name: "Jane Smith", role: "អ្នករចនា UI/UX", desc: "អតីតអ្នករចនានៅ Google, ចែករំលែកគន្លឹះរចនាទាន់សម័យ។", rating: 4.9, students: "35k+", courses: 8, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" },
+                        { id: 3, name: "David Lee", role: "អ្នកវិទ្យាសាស្ត្រទិន្នន័យ", desc: "អ្នកជំនាញ Python និង AI ដែលជួយអ្នកចាប់ផ្តើមជាមួយ Data Science។", rating: 4.7, students: "28k+", courses: 12, img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" },
+                        { id: 4, name: "Sarah Connor", role: "អ្នកជំនាញទីផ្សារឌីជីថល", desc: "ជួយអ្នករៀនពីរបៀបធ្វើទីផ្សារតាមបណ្តាញសង្គមនិង SEO។", rating: 4.6, students: "40k+", courses: 10, img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop" }
+                    ];
+                }
+            applyPageTranslations();
+            } catch (error) {
+                console.error('Failed to load teachers data:', error);
+                teacherGrid.innerHTML = '<div class="col-12 text-center py-5"><h5 class="text-danger">Failed to load data. Please try again later.</h5></div>';
+            }
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -30px 0px',
+                threshold: 0.15
+            };
+
+            window.scrollObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                window.scrollObserver.observe(el);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", initializePage);
+    </script>
+</body>
+
+</html>

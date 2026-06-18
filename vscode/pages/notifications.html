@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - សេចក្តីជូនដំណឹង</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/notifications.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+    <!-- Main Navigation Fixed Sidebar -->
+    <aside class="dashboard-sidebar" id="app-sidebar"></aside>
+    <!-- Main Workspace View -->
+    <div class="dashboard-main-view">
+        <!-- Container Content Inner Workspace -->
+        <div class="workspace-container">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 fw-bold m-0" style="font-weight: 800; font-size: 28px;" data-i18n="notifs_title">សេចក្តីជូនដំណឹង</h1>
+                <button id="markAllReadBtn" class="btn btn-outline-primary btn-sm px-3 fw-semibold" style="border-radius: 8px;"><i class="bi bi-check2-all me-1"></i> <span data-i18n="btn_mark_all_read">សម្គាល់ថាបានអានទាំងអស់</span></button>
+            </div>
+
+            <!-- ទីតាំងបង្ហាញសារជូនដំណឹង (នឹងត្រូវបាន Render ចូលទីនេះដោយ JavaScript) -->
+            <div id="notification-container"></div>
+
+        </div>
+    </div>
+
+    <!-- Certificate Modal Pop-up -->
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow" style="border-radius: 20px; border: none;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center px-4 px-md-5 pb-5 pt-0">
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-1" data-i18n="cert_title">វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា</h3>
+                        <p class="text-muted small" data-i18n="cert_desc">នេះជាការបញ្ជាក់ថាអ្នកបានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ។</p>
+                    </div>
+                    
+                    <div class="bg-light p-4 rounded-4 border border-light-subtle position-relative mb-4" style="background: linear-gradient(135deg, #f8fafc, #f1f5f9);">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4" style="border: 8px solid #e2e8f0; pointer-events: none;"></div>
+                        <div class="py-5">
+                            <i class="bi bi-award-fill text-warning mb-3 d-inline-block" style="font-size: 50px;"></i>
+                            <h2 class="fw-bold text-dark mb-4" style="font-family: 'Times New Roman', serif; font-size: 36px;">John Doe</h2>
+                            <p class="text-muted mb-2" data-i18n="cert_success_msg">បានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ</p>
+                            <h4 class="fw-bold text-primary mb-4">វគ្គបណ្តុះបណ្តាលសរសេរកូដ Python</h4>
+                            <div class="d-flex justify-content-center gap-5 text-muted small">
+                                <div>
+                                    <div class="fw-bold text-dark border-bottom border-dark pb-1 mb-1" style="font-size: 14px;">15 មីនា 2026</div>
+                                    <div data-i18n="date_label">កាលបរិច្ឆេទ</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark border-bottom border-dark pb-1 mb-1" style="font-size: 14px;">UC-A1B2C3</div>
+                                    <div data-i18n="cert_id_label">លេខសម្គាល់វិញ្ញាបនបត្រ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary fw-semibold px-4 py-2" data-bs-dismiss="modal" style="border-radius: 10px;" data-i18n="close">បិទ</button>
+                        <button type="button" class="btn btn-primary fw-semibold px-4 py-2" style="border-radius: 10px;"><i class="bi bi-download me-1"></i> <span data-i18n="download_pdf">ទាញយក PDF</span></button>
+                        <button type="button" class="btn btn-light fw-semibold px-4 py-2 border" style="border-radius: 10px;"><i class="bi bi-share me-1"></i> <span data-i18n="share">ចែករំលែក</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Public Footer Component -->
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/sidebar.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            // វចនានុក្រមបកប្រែសម្រាប់ទំព័រសេចក្តីជូនដំណឹង
+            const pageTranslations = {
+                'km': {
+                    'notifs_title': 'សេចក្តីជូនដំណឹង', 'btn_mark_all_read': 'សម្គាល់ថាបានអានទាំងអស់',
+                    'group_today': 'ថ្ងៃនេះ', 'group_yesterday': 'ម្សិលមិញ', 'group_older': 'ចាស់ជាងនេះ',
+                    'cert_title': 'វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា', 'cert_desc': 'នេះជាការបញ្ជាក់ថាអ្នកបានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ។',
+                    'cert_success_msg': 'បានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ', 'date_label': 'កាលបរិច្ឆេទ', 'cert_id_label': 'លេខសម្គាល់វិញ្ញាបនបត្រ',
+                    'close': 'បិទ', 'download_pdf': 'ទាញយក PDF', 'share': 'ចែករំលែក',
+                    
+                    'notif_1_title': 'កិច្ចការត្រូវបានដាក់ពិន្ទុ: កម្រងសំណួរ HTML ចុងក្រោយ', 'notif_1_desc': 'គ្រូបង្រៀនរបស់អ្នក Sarah Johnson បានដាក់ពិន្ទុលើការបញ្ជូនរបស់អ្នក។ អ្នកទទួលបានពិន្ទុ 95/100។',
+                    'notif_2_title': 'ទទួលបានវិញ្ញាបនបត្រថ្មី!', 'notif_2_desc': 'សូមអបអរសាទរ! អ្នកបានបញ្ចប់ "វគ្គបណ្តុះបណ្តាលសរសេរកូដ Python" ដោយជោគជ័យ និងទទួលបានវិញ្ញាបនបត្រថ្មីមួយ។',
+                    'notif_3_title': 'វគ្គសិក្សាថ្មីអាចចូលរៀនបាន: Advanced React Patterns', 'notif_3_desc': 'វគ្គសិក្សាថ្មីដែលត្រូវនឹងចំណាប់អារម្មណ៍របស់អ្នកត្រូវបានបោះពុម្ពផ្សាយហើយ។ ចុះឈ្មោះឥឡូវនេះដើម្បីទទួលបានការបញ្ចុះតម្លៃ 20%។',
+                    'notif_4_title': 'សារថ្មីពី Emma Brown', 'notif_4_desc': '"ខ្ញុំនឹងផ្ញើឯកសារតាមក្រោយ។ ប្រាប់ខ្ញុំប្រសិនបើអ្នកត្រូវការអ្វីផ្សេងទៀត..."',
+                    'notif_5_title': 'ការរំលឹកពីកិច្ចការ', 'notif_5_desc': 'កិច្ចការ "ការរចនាទំព័រចុះចត (Landing Page) ដែលអាចបត់បែនបាន" របស់អ្នកនឹងផុតកំណត់នៅថ្ងៃស្អែក។ សូមប្រាកដថាបានបញ្ជូនវាឲ្យទាន់ពេលវេលា។',
+                    'notif_6_title': 'ការដាស់តឿនសុវត្ថិភាព: ការចូលគណនីថ្មី', 'notif_6_desc': 'យើងបានកត់សម្គាល់ការចូលគណនី Smart Learn របស់អ្នកពីឧបករណ៍ថ្មី (Mac OS, Chrome)។ ប្រសិនបើនេះជាអ្នក អ្នកអាចមិនអើពើនឹងសារនេះ។',
+                    
+                    'time_2_hours_ago': '2 ម៉ោងមុន', 'time_5_hours_ago': '5 ម៉ោងមុន', 'time_8_hours_ago': '8 ម៉ោងមុន',
+                    'time_yesterday_430': 'ម្សិលមិញម៉ោង 4:30 ល្ងាច', 'time_yesterday_900': 'ម្សិលមិញម៉ោង 9:00 ព្រឹក', 'time_oct_15': '15 តុលា 2026'
+                },
+                'en': {
+                    'notifs_title': 'Notifications', 'btn_mark_all_read': 'Mark all as read',
+                    'group_today': 'Today', 'group_yesterday': 'Yesterday', 'group_older': 'Older',
+                    'cert_title': 'Certificate of Completion', 'cert_desc': 'This certifies that you have successfully completed the course.',
+                    'cert_success_msg': 'successfully completed the course', 'date_label': 'Date', 'cert_id_label': 'Certificate ID',
+                    'close': 'Close', 'download_pdf': 'Download PDF', 'share': 'Share',
+                    
+                    'notif_1_title': 'Assignment Graded: Final HTML Quiz', 'notif_1_desc': 'Your instructor Sarah Johnson has graded your submission. You scored 95/100.',
+                    'notif_2_title': 'New Certificate Earned!', 'notif_2_desc': 'Congratulations! You have successfully completed "Python for Data Science" and earned a new certificate.',
+                    'notif_3_title': 'New Course Available: Advanced React Patterns', 'notif_3_desc': 'A new course matching your interests has been published. Enroll now to get a 20% discount.',
+                    'notif_4_title': 'New message from Emma Brown', 'notif_4_desc': '"I will send the files later. Let me know if you need anything else..."',
+                    'notif_5_title': 'Assignment Reminder', 'notif_5_desc': 'Your assignment "Responsive Landing Page Design" is due tomorrow. Please make sure to submit it on time.',
+                    'notif_6_title': 'Security Alert: New Login', 'notif_6_desc': 'We noticed a login to your Smart Learn account from a new device (Mac OS, Chrome). If this was you, you can ignore this message.',
+                    
+                    'time_2_hours_ago': '2 hours ago', 'time_5_hours_ago': '5 hours ago', 'time_8_hours_ago': '8 hours ago',
+                    'time_yesterday_430': 'Yesterday at 4:30 PM', 'time_yesterday_900': 'Yesterday at 9:00 AM', 'time_oct_15': 'Oct 15, 2026'
+                }
+            };
+
+            const notificationContainer = document.getElementById('notification-container');
+            let notificationsData = [];
+
+            function applyPageTranslations() {
+                const lang = localStorage.getItem('language') || 'km';
+                const t = pageTranslations[lang] || pageTranslations['km'];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) el.innerHTML = t[key];
+                });
+                renderNotifications();
+            }
+            document.addEventListener('languageChanged', applyPageTranslations);
+
+            // មុខងារសម្រាប់ Render សារជូនដំណឹង
+            function renderNotifications() {
+                if (!notificationContainer) return;
+                const lang = localStorage.getItem('language') || 'km';
+                const tr = (key) => pageTranslations[lang] ? pageTranslations[lang][key] : key;
+
+                const groupedNotifs = notificationsData.reduce((acc, notif) => {
+                    const group = notif.dateGroup;
+                    if (!acc[group]) {
+                        acc[group] = [];
+                    }
+                    acc[group].push(notif);
+                    return acc;
+                }, {});
+
+                let html = '';
+                const groupOrder = ['today', 'yesterday', 'older'];
+                const groupTitles = {
+                    today: tr('group_today'),
+                    yesterday: tr('group_yesterday'),
+                    older: tr('group_older')
+                };
+
+                groupOrder.forEach(groupKey => {
+                    if (groupedNotifs[groupKey] && groupedNotifs[groupKey].length > 0) {
+                        html += `<span class="notification-date-label">${groupTitles[groupKey]}</span>`;
+                        html += groupedNotifs[groupKey].map(notif => {
+                            const unreadClass = notif.unread ? 'unread shadow-sm' : '';
+                            const unreadDot = notif.unread ? '<div class="unread-dot"></div>' : '';
+                            
+                            return `
+                                <a href="${notif.link}" class="notification-card ${unreadClass}" data-id="${notif.id}">
+                                    <div class="notification-icon ${notif.iconClass}"><i class="bi ${notif.icon}"></i></div>
+                                    <div class="notification-content">
+                                        <div class="notification-title">${tr(notif.titleKey)}</div>
+                                        <div class="notification-desc">${tr(notif.descKey)}</div>
+                                        <div class="notification-time"><i class="bi bi-clock"></i> ${tr(notif.timeKey)}</div>
+                                    </div>
+                                    ${unreadDot}
+                                    <div class="position-relative ms-2" style="z-index: 10;">
+                                        <button class="delete-notification-btn" title="លុប"><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </a>
+                            `;
+                        }).join('');
+                    }
+                });
+
+                notificationContainer.innerHTML = html;
+                addDeleteFunctionality();
+            }
+
+            // មុខងារសម្រាប់លុបសារជូនដំណឹង
+            function addDeleteFunctionality() {
+                const deleteBtns = document.querySelectorAll('.delete-notification-btn');
+                deleteBtns.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const card = this.closest('.notification-card');
+                        const notifId = parseInt(card.getAttribute('data-id'));
+
+                        if (card) {
+                            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateX(20px)';
+
+                            setTimeout(() => {
+                                notificationsData = notificationsData.filter(n => n.id !== notifId);
+                                renderNotifications(); // Render ឡើងវិញបន្ទាប់ពីលុប
+                                localStorage.setItem('notifications_db', JSON.stringify(notificationsData)); // ធ្វើបច្ចុប្បន្នភាពចូល LocalStorage
+                            }, 300);
+                        }
+                    });
+                });
+            }
+
+            // មុខងារ "សម្គាល់ថាបានអានទាំងអស់"
+            const markAllReadBtn = document.getElementById('markAllReadBtn');
+            if (markAllReadBtn) {
+                markAllReadBtn.addEventListener('click', () => {
+                    notificationsData.forEach(n => n.unread = false);
+                    renderNotifications();
+                    localStorage.setItem('notifications_db', JSON.stringify(notificationsData)); // ធ្វើបច្ចុប្បន្នភាពចូល LocalStorage
+                });
+            }
+
+            // ទាញយកទិន្នន័យ និងចាប់ផ្តើម Render
+            async function initializePage() {
+                try {
+                    // អានទិន្នន័យពី LocalStorage ជាមុនសិន
+                    const localNotifications = localStorage.getItem('notifications_db');
+                    
+                    if (localNotifications) {
+                        notificationsData = JSON.parse(localNotifications);
+                    } else {
+                        // ទិន្នន័យបម្រុង (Fallback Data) ក្នុងករណីមិនទាន់មានទិន្នន័យក្នុង LocalStorage
+                        notificationsData = [
+                            { id: 1, dateGroup: "today", unread: true, link: "assignments.html", iconClass: "icon-success", icon: "bi-journal-check", title: "កិច្ចការត្រូវបានដាក់ពិន្ទុ: កម្រងសំណួរ HTML ចុងក្រោយ", titleKey: "notif_1_title", desc: "គ្រូបង្រៀនរបស់អ្នក Sarah Johnson បានដាក់ពិន្ទុលើការបញ្ជូនរបស់អ្នក។ អ្នកទទួលបានពិន្ទុ 95/100។", descKey: "notif_1_desc", time: "2 ម៉ោងមុន", timeKey: "time_2_hours_ago" },
+                            { id: 2, dateGroup: "today", unread: true, link: "certificates.html", iconClass: "icon-warning", icon: "bi-award-fill", title: "ទទួលបានវិញ្ញាបនបត្រថ្មី!", titleKey: "notif_2_title", desc: "សូមអបអរសាទរ! អ្នកបានបញ្ចប់ \"វគ្គបណ្តុះបណ្តាលសរសេរកូដ Python\" ដោយជោគជ័យ និងទទួលបានវិញ្ញាបនបត្រថ្មីមួយ។", descKey: "notif_2_desc", time: "5 ម៉ោងមុន", timeKey: "time_5_hours_ago" },
+                            { id: 3, dateGroup: "today", unread: true, link: "courses.html", iconClass: "icon-primary", icon: "bi-megaphone-fill", title: "វគ្គសិក្សាថ្មីអាចចូលរៀនបាន: Advanced React Patterns", titleKey: "notif_3_title", desc: "វគ្គសិក្សាថ្មីដែលត្រូវនឹងចំណាប់អារម្មណ៍របស់អ្នកត្រូវបានបោះពុម្ពផ្សាយហើយ។ ចុះឈ្មោះឥឡូវនេះដើម្បីទទួលបានការបញ្ចុះតម្លៃ 20%។", descKey: "notif_3_desc", time: "8 ម៉ោងមុន", timeKey: "time_8_hours_ago" },
+                            { id: 4, dateGroup: "yesterday", unread: false, link: "messages.html", iconClass: "icon-purple", icon: "bi-chat-dots-fill", title: "សារថ្មីពី Emma Brown", titleKey: "notif_4_title", desc: "\"ខ្ញុំនឹងផ្ញើឯកសារតាមក្រោយ។ ប្រាប់ខ្ញុំប្រសិនបើអ្នកត្រូវការអ្វីផ្សេងទៀត...\"", descKey: "notif_4_desc", time: "ម្សិលមិញម៉ោង 4:30 ល្ងាច", timeKey: "time_yesterday_430" },
+                            { id: 5, dateGroup: "yesterday", unread: false, link: "assignments.html", iconClass: "icon-danger", icon: "bi-exclamation-triangle-fill", title: "ការរំលឹកពីកិច្ចការ", titleKey: "notif_5_title", desc: "កិច្ចការ \"ការរចនាទំព័រចុះចត (Landing Page) ដែលអាចបត់បែនបាន\" របស់អ្នកនឹងផុតកំណត់នៅថ្ងៃស្អែក។ សូមប្រាកដថាបានបញ្ជូនវាឲ្យទាន់ពេលវេលា។", descKey: "notif_5_desc", time: "ម្សិលមិញម៉ោង 9:00 ព្រឹក", timeKey: "time_yesterday_900" },
+                            { id: 6, dateGroup: "older", unread: false, link: "profile.html", iconClass: "bg-secondary text-white", icon: "bi-shield-lock-fill", title: "ការដាស់តឿនសុវត្ថិភាព: ការចូលគណនីថ្មី", titleKey: "notif_6_title", desc: "យើងបានកត់សម្គាល់ការចូលគណនី Smart Learn របស់អ្នកពីឧបករណ៍ថ្មី (Mac OS, Chrome)។ ប្រសិនបើនេះជាអ្នក អ្នកអាចមិនអើពើនឹងសារនេះ។", descKey: "notif_6_desc", time: "15 តុលា 2026", timeKey: "time_oct_15" }
+                        ];
+                    }
+                    applyPageTranslations();
+                } catch (error) {
+                    console.error('Failed to load notifications data:', error);
+                }
+            }
+            initializePage();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - បញ្ជីចំណូលចិត្ត</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/wishlist.css" rel="stylesheet">
+    <style>
+        .course-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .card-img-placeholder {
+            height: 180px;
+            position: relative;
+        }
+
+        .card-img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-heart {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 5;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .wishlist-heart:hover {
+            transform: scale(1.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: white;
+            z-index: 5;
+        }
+
+        .badge-bestseller {
+            background: #f97316;
+        }
+
+        .badge-popular {
+            background: #10b981;
+        }
+
+        .badge-new {
+            background: #3b82f6;
+        }
+
+        .course-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-card-cat {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .course-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .instructor-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: auto;
+        }
+
+        .instructor-row img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .meta-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        .rating-star {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-weight: 600;
+        }
+
+        .duration-info {
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .price-wrapper {
+            margin-top: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+
+        .price-wrapper span {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-left: 5px;
+        }
+
+        /* រចនាទម្រង់ Play Icon ពេល Hover លើកាត */
+        .card-img-placeholder {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-img-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hover-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            width: 48px;
+            height: 48px;
+            background: white;
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            opacity: 0;
+            z-index: 2;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .course-card:hover .card-img-placeholder::after {
+            opacity: 1;
+        }
+
+        .course-card:hover .hover-play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Dark Mode overrides */
+        body.dark-mode .course-card {
+            background: var(--surface-color);
+            border-color: var(--border-color);
+        }
+        body.dark-mode .course-card-title {
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+
+    <!-- Main Navigation Fixed Sidebar -->
+    <aside class="dashboard-sidebar" id="app-sidebar"></aside>
+
+    <div class="dashboard-main-view">
+        <!-- Container Content Inner Workspace -->
+        <div class="workspace-container">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2">
+                <div>
+                    <h1 class="h3 fw-bold m-0" style="font-weight: 800; font-size: 28px;" data-i18n="wishlist_title">បញ្ជីចំណូលចិត្ត</h1>
+                    <p class="text-muted small m-0 mt-1" data-i18n="wishlist_desc">វគ្គសិក្សាដែលអ្នកបានចុចបេះដូងរក្សាទុកសម្រាប់សិក្សានៅពេលក្រោយ។
+                    </p>
+                </div>
+            </div>
+
+            <div class="row g-4" id="wishlist-grid"></div>
+
+        </div>
+    </div>
+
+    <!-- Video Preview Modal -->
+    <div class="modal fade" id="videoPreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-dark border-0 overflow-hidden" style="border-radius: 16px;">
+                <div class="modal-header border-0 position-absolute top-0 end-0 z-3 p-3">
+                    <button type="button" class="btn-close btn-close-white bg-dark bg-opacity-50 p-2"
+                        data-bs-dismiss="modal" aria-label="Close" style="border-radius: 50%;"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="ratio ratio-16x9">
+                        <iframe id="previewVideoIframe" src="" title="Course Preview" allowfullscreen
+                            allow="autoplay"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/sidebar.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // វចនានុក្រមបកប្រែសម្រាប់ទំព័របញ្ជីចំណូលចិត្ត
+            const pageTranslations = {
+                'km': {
+                    'wishlist_title': 'បញ្ជីចំណូលចិត្ត', 'wishlist_desc': 'វគ្គសិក្សាដែលអ្នកបានចុចបេះដូងរក្សាទុកសម្រាប់សិក្សានៅពេលក្រោយ។',
+                    'empty_wishlist': 'បញ្ជីចំណូលចិត្តរបស់អ្នកទទេ', 'empty_wishlist_desc': 'អ្នកមិនទាន់បានរក្សាទុកវគ្គសិក្សាណាមួយនៅឡើយទេ។ សូមស្វែងរកវគ្គសិក្សាដែលអ្នកពេញចិត្តដើម្បីទុកសិក្សានៅពេលក្រោយ។',
+                    'btn_explore': 'ស្វែងរកវគ្គសិក្សា', 'free': 'ឥតគិតថ្លៃ', 'btn_buy': 'ទិញ'
+                },
+                'en': {
+                    'wishlist_title': 'Wishlist', 'wishlist_desc': 'Courses you have hearted to save for later learning.',
+                    'empty_wishlist': 'Your wishlist is empty', 'empty_wishlist_desc': 'You haven\'t saved any courses yet. Explore courses and add them to your wishlist.',
+                    'btn_explore': 'Explore Courses', 'free': 'Free', 'btn_buy': 'Add to Cart',
+                    'ការអភិវឌ្ឍន៍': 'Development', 'ការរចនា': 'Design', 'អាជីវកម្ម': 'Business', 'ព័ត៌មានវិទ្យា និងកម្មវិធី': 'IT & Software', 'ទីផ្សារ': 'Marketing', 'ការអភិវឌ្ឍខ្លួន': 'Personal Dev',
+                    'លក់ដាច់បំផុត': 'Best Seller', 'ពេញនិយម': 'Popular', 'ថ្មី': 'New'
+                }
+            };
+
+            let coursesDB = [];
+
+            const wishlistGrid = document.getElementById("wishlist-grid");
+
+            // អនុគមន៍សម្រាប់បកប្រែទំព័រ
+            function applyPageTranslations() {
+                const lang = localStorage.getItem('language') || 'km';
+                const t = pageTranslations[lang] || pageTranslations['km'];
+
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) {
+                        if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                            el.placeholder = t[key];
+                        } else {
+                            el.innerHTML = t[key];
+                        }
+                    }
+                });
+                renderWishlist(); 
+            }
+            document.addEventListener('languageChanged', applyPageTranslations);
+
+            // ២. អនុគមន៍បង្កើតរូបផ្កាយ (Star Generator)
+            function generateStars(rating) {
+                let starsHtml = '';
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 !== 0;
+                for (let i = 0; i < fullStars; i++) {
+                    starsHtml += '<i class="bi bi-star-fill text-warning"></i>';
+                }
+                if (hasHalfStar) {
+                    starsHtml += '<i class="bi bi-star-half text-warning"></i>';
+                }
+                const emptyStars = 5 - Math.ceil(rating);
+                for (let i = 0; i < emptyStars; i++) {
+                    starsHtml += '<i class="bi bi-star text-warning"></i>';
+                }
+                return starsHtml;
+            }
+
+            // ៣. មុខងារ Render កាតវគ្គសិក្សាចំណូលចិត្ត
+            function renderWishlist() {
+                if (!wishlistGrid) return;
+                const lang = localStorage.getItem('language') || 'km';
+                const tr = (key) => (pageTranslations[lang] && pageTranslations[lang][key]) ? pageTranslations[lang][key] : key;
+
+                const wishlistIds = JSON.parse(localStorage.getItem('course_wishlist') || '[]');
+
+                if (wishlistIds.length === 0) {
+                    wishlistGrid.innerHTML = `
+                        <div class="col-12 text-center py-5 fade-in-scale">
+                            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/search-not-found-5342748-4468820.png" alt="Empty Wishlist" style="width: 180px; margin-bottom: 24px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));">
+                            <h5 class="fw-bold mb-2 text-dark">${tr('empty_wishlist')}</h5>
+                            <p class="text-muted mb-4 mx-auto" style="max-width: 400px; font-size: 15px;">${tr('empty_wishlist_desc')}</p>
+                            <a href="courses.html" class="btn btn-primary fw-bold px-4 py-2" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(37,99,235,0.2);">
+                                <i class="bi bi-search me-1"></i> ${tr('btn_explore')}
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const wishlistedCourses = coursesDB.filter(c => wishlistIds.includes(c.id));
+
+                wishlistGrid.innerHTML = wishlistedCourses.map((course, index) => {
+                    const priceHtml = course.price === 0
+                        ? `<div class="price-wrapper m-0">${tr('free')}</div>`
+                        : `<div class="price-wrapper m-0">$${course.price} <span>${course.oldPrice}</span></div>`;
+
+                    const badgeHtml = course.badgeClass
+                        ? `<span class="card-badge ${course.badgeClass}">${tr(course.badgeText) || course.badgeText}</span>`
+                        : '';
+
+                    return `
+                        <div class="col-md-6 col-xl-4 reveal-on-scroll" style="transition-delay: ${index * 50}ms;">
+                            <div class="course-card" onclick="window.location.href='course-detail.html?id=${course.id}'">
+                                ${badgeHtml}
+                                <div class="wishlist-heart" onclick="event.stopPropagation(); removeWishlist(this, ${course.id})"><i class="bi bi-heart-fill text-danger"></i></div>
+                                <div class="card-img-placeholder" onclick="event.stopPropagation(); openVideoModal('https://www.youtube.com/embed/pQN-pnXPaVg?autoplay=1')">
+                                    <img src="${course.courseImg}" alt="${course.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div class="hover-play-btn"><i class="bi bi-play-fill" style="margin-left: 2px;"></i></div>
+                                </div>
+                                <div class="course-card-body">
+                                    <span class="course-card-cat">${tr(course.category) || course.category}</span>
+                                    <h3 class="course-card-title">${course.title}</h3>
+                                    <div class="instructor-row">
+                                        <img src="${course.instructorImg}" alt="">
+                                        <span>${course.instructor}</span>
+                                    </div>
+                                    <div class="meta-info-row">
+                                        <div class="rating-star" style="gap: 2px;">
+                                            ${generateStars(course.rating)} <span class="text-dark fw-bold ms-1" style="font-size: 13px;">${course.rating}</span> <span>(${course.reviews})</span>
+                                        </div>
+                                        <div class="duration-info"><i class="bi bi-clock"></i> ${course.duration}</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        ${priceHtml}
+                                        <button class="btn btn-light border btn-sm px-3 fw-bold text-primary shadow-sm" style="border-radius: 8px;" onclick="event.stopPropagation(); addToCart(${course.id}, this)"><i class="bi bi-cart-plus me-1"></i> ${tr('btn_buy')}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                setTimeout(() => {
+                    const newCards = wishlistGrid.querySelectorAll('.reveal-on-scroll:not(.is-revealed)');
+                    newCards.forEach(el => {
+                        if (window.scrollObserver) window.scrollObserver.observe(el);
+                        else if (window.globalScrollObserver) window.globalScrollObserver.observe(el);
+                    });
+                }, 50);
+            }
+
+            // ៤. មុខងារសម្រាប់លុបចេញពីចំណូលចិត្ត (ផ្តាច់មុខសម្រាប់តែទំព័រនេះ)
+            window.removeWishlist = function (element, courseId) {
+                let wishlist = JSON.parse(localStorage.getItem('course_wishlist') || '[]');
+                wishlist = wishlist.filter(id => id !== courseId);
+                localStorage.setItem('course_wishlist', JSON.stringify(wishlist));
+
+                // បង្កើតចលនាលុបកាតចេញ
+                const cardContainer = element.closest('.col-md-6');
+                if (cardContainer) {
+                    cardContainer.style.transition = 'all 0.3s ease';
+                    cardContainer.style.opacity = '0';
+                    cardContainer.style.transform = 'scale(0.9)';
+
+                    setTimeout(() => {
+                        renderWishlist(); // ទាញទិន្នន័យមកបង្ហាញម្តងទៀត
+                    }, 300);
+                }
+            };
+
+            // ទាញយកទិន្នន័យពី JSON
+            async function initializePage() {
+                try {
+                    // ទាញយកវគ្គសិក្សាពី LocalStorage ជាមុនសិន
+                    const localCourses = localStorage.getItem('admin_courses_db');
+                    if (localCourses) {
+                        coursesDB = JSON.parse(localCourses);
+                    } else {
+                        const response = await fetch('../assets/data/db.json');
+                        const data = await response.json();
+                        coursesDB = data.courses;
+                    }
+                    applyPageTranslations();
+                } catch (error) {
+                    console.error('Failed to load wishlist data:', error);
+                }
+            }
+
+            initializePage();
+            
+            // មុខងារបន្ថែមទៅកន្ត្រក (Add to Cart) សម្រាប់កាតនិមួយៗ
+            window.addToCart = function(courseId, btnElement) {
+                let cart = JSON.parse(localStorage.getItem('cart_items') || '[]');
+                
+                if (!cart.includes(courseId)) {
+                    cart.push(courseId);
+                    localStorage.setItem('cart_items', JSON.stringify(cart));
+                    
+                    if (window.updateCartBadge) window.updateCartBadge(true); // ឲ្យកន្ត្រកញ័រ
+                    
+                    const originalHtml = btnElement.innerHTML;
+                    btnElement.innerHTML = '<i class="bi bi-check-lg"></i>';
+                    btnElement.classList.replace('btn-light', 'btn-success');
+                    btnElement.classList.replace('text-primary', 'text-white');
+                    
+                    setTimeout(() => {
+                        btnElement.innerHTML = originalHtml;
+                        btnElement.classList.replace('btn-success', 'btn-light');
+                        btnElement.classList.replace('text-white', 'text-primary');
+                    }, 2000);
+                } else {
+                    const originalHtml = btnElement.innerHTML;
+                    btnElement.innerHTML = '<i class="bi bi-bag-check-fill"></i>';
+                    setTimeout(() => { btnElement.innerHTML = originalHtml; }, 2000);
+                }
+            };
+
+            // មុខងារបើក Modal វីដេអូ Preview
+            window.openVideoModal = function (videoUrl) {
+                const iframe = document.getElementById('previewVideoIframe');
+                const modalEl = document.getElementById('videoPreviewModal');
+                if (iframe && modalEl) {
+                    iframe.src = videoUrl;
+                    const modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                }
+            };
+
+            // បញ្ឈប់វីដេអូពេលបិទ Modal
+            const videoModalEl = document.getElementById('videoPreviewModal');
+            if (videoModalEl) {
+                videoModalEl.addEventListener('hidden.bs.modal', function () {
+                    const iframe = document.getElementById('previewVideoIframe');
+                    if (iframe) iframe.src = '';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

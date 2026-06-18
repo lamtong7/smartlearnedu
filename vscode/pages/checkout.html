@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - ទូទាត់ប្រាក់</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/pages/checkout.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+
+    <div class="container py-5 mt-3 mb-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-2 small">
+                        <li class="breadcrumb-item"><a href="../index.html" class="text-decoration-none text-muted">ទំព័រដើម</a></li>
+                        <li class="breadcrumb-item"><a href="courses.html" class="text-decoration-none text-muted">វគ្គសិក្សា</a></li>
+                        <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">ទូទាត់ប្រាក់</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-bold mb-0 fs-3">ទូទាត់ប្រាក់</h1>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Form & Payment -->
+            <div class="col-lg-8">
+                <!-- Billing Details -->
+                <div class="bg-white rounded-4 p-4 shadow-sm border border-light-subtle mb-4">
+                    <h4 class="fw-bold mb-4 fs-5 border-bottom pb-3">ព័ត៌មានវិក្កយបត្រ</h4>
+                    <form id="billingForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">នាមខ្លួន</label>
+                                <input type="text" class="form-control" value="John" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">នាមត្រកូល</label>
+                                <input type="text" class="form-control" value="Doe" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">អាសយដ្ឋានអ៊ីមែល</label>
+                                <input type="email" class="form-control" value="john.doe@example.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">លេខទូរស័ព្ទ</label>
+                                <input type="tel" class="form-control" value="+855 12 345 678" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">ប្រទេស / តំបន់</label>
+                                <select class="form-select">
+                                    <option value="kh" selected>កម្ពុជា</option>
+                                    <option value="th">ថៃ</option>
+                                    <option value="vn">វៀតណាម</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="bg-white rounded-4 p-4 shadow-sm border border-light-subtle">
+                    <h4 class="fw-bold mb-4 fs-5 border-bottom pb-3">វិធីសាស្ត្របង់ប្រាក់</h4>
+                    
+                    <div class="accordion" id="paymentAccordion">
+                        <!-- Credit Card -->
+                        <div class="accordion-item border rounded-3 mb-3 overflow-hidden">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCard" aria-expanded="true" aria-controls="collapseCard">
+                                    <i class="bi bi-credit-card-2-front text-primary me-2 fs-5"></i> កាតឥណទាន ឬឥណពន្ធ
+                                </button>
+                            </h2>
+                            <div id="collapseCard" class="accordion-collapse collapse show" data-bs-parent="#paymentAccordion">
+                                <div class="accordion-body bg-light">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">ឈ្មោះនៅលើកាត</label>
+                                            <input type="text" class="form-control" placeholder="បញ្ចូលឈ្មោះ" required>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small fw-semibold">លេខកាត</label>
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" placeholder="0000 0000 0000 0000" required>
+                                                <div class="position-absolute top-50 end-0 translate-middle-y pe-2 d-flex gap-1">
+                                                    <i class="bi bi-cc-visa fs-4 text-primary"></i>
+                                                    <i class="bi bi-cc-mastercard fs-4 text-danger"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">កាលបរិច្ឆេទផុតកំណត់</label>
+                                            <input type="text" class="form-control" placeholder="MM/YY" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label small fw-semibold">លេខកូដ CVC/CVV</label>
+                                            <input type="password" class="form-control" placeholder="123" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KHQR / ABA -->
+                        <div class="accordion-item border rounded-3 overflow-hidden">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKHQR" aria-expanded="false" aria-controls="collapseKHQR">
+                                    <i class="bi bi-qr-code-scan text-danger me-2 fs-5"></i> KHQR / ធនាគារក្នុងស្រុក
+                                </button>
+                            </h2>
+                            <div id="collapseKHQR" class="accordion-collapse collapse" data-bs-parent="#paymentAccordion">
+                                <div class="accordion-body text-center py-4 bg-light">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/300px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="KHQR" class="img-thumbnail mb-3 shadow-sm rounded-4" style="width: 180px; height: 180px;">
+                                    <p class="mb-1 fw-bold">ស្កេនដើម្បីបង់ប្រាក់</p>
+                                    <p class="text-muted small mb-0">គាំទ្រ ABA, ACLEDA និងកម្មវិធីធនាគារទាំងអស់ដែលមាន KHQR</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Order Summary -->
+            <div class="col-lg-4">
+                <div class="bg-white rounded-4 p-4 shadow-sm border border-light-subtle sticky-lg-top" style="top: 100px;">
+                    <h4 class="fw-bold mb-4 fs-5 border-bottom pb-3">សង្ខេបការបញ្ជាទិញ</h4>
+                    
+                    <!-- Items Container -->
+                    <div id="checkoutItemsContainer" class="mb-4" style="max-height: 300px; overflow-y: auto; scrollbar-width: thin; padding-right: 5px;">
+                        <!-- JS នឹងគូរកាតវគ្គសិក្សាមកដាក់ទីនេះ -->
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">តម្លៃដើម:</span>
+                        <span class="fw-semibold" id="checkoutOldPrice">$99.99</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 border-bottom pb-3">
+                        <span class="text-muted">បញ្ចុះតម្លៃ:</span>
+                        <span class="text-danger fw-semibold" id="checkoutDiscount">-$50.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fw-bold fs-5">សរុប:</span>
+                        <span class="fw-bold fs-3 text-primary" id="checkoutPrice">$49.99</span>
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-3 fw-bold mb-3" style="border-radius: 12px; font-size: 16px;" id="completePaymentBtn">
+                        ទូទាត់ប្រាក់ឥឡូវនេះ <i class="bi bi-lock-fill ms-1"></i>
+                    </button>
+                    
+                    <p class="text-center text-muted small mb-0" style="font-size: 11px;">
+                        <i class="bi bi-shield-check text-success fs-6 align-middle me-1"></i> ការទូទាត់របស់អ្នកត្រូវបានរក្សាការសម្ងាត់ និងមានសុវត្ថិភាព១០០%
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Public Footer Component -->
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const completePaymentBtn = document.getElementById('completePaymentBtn');
+
+            if (completePaymentBtn) {
+                completePaymentBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // បង្កើតចលនា Loading ពេលចុច
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> កំពុងដំណើរការ...';
+                    this.disabled = true;
+
+                    // ចាំ 2 វិនាទី បន្ទាប់មកបង្ហាញផ្ទាំងជោគជ័យ
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                        
+                        // === ធ្វើបច្ចុប្បន្នភាព Dashboard Data ក្នុង LocalStorage ===
+                        try {
+                            const localDashboard = localStorage.getItem('dashboard_db');
+                            let dashboardData;
+                            
+                            if (localDashboard) {
+                                dashboardData = JSON.parse(localDashboard);
+                            } else {
+                                // ទិន្នន័យបម្រុង បើមិនទាន់មានក្នុង LocalStorage
+                                dashboardData = {
+                                    stats: [
+                                        { colorClass: "primary", icon: "bi-journal-bookmark-fill", target: 4, suffix: "", title: "វគ្គសិក្សាកំពុងរៀន", titleKey: "stat_in_progress" },
+                                        { colorClass: "success", icon: "bi-patch-check-fill", target: 12, suffix: "", title: "វគ្គបានបញ្ចប់", titleKey: "stat_completed" },
+                                        { colorClass: "warning", icon: "bi-award-fill", target: 5, suffix: "", title: "វិញ្ញាបនបត្រ", titleKey: "stat_cert" },
+                                        { colorClass: "info", icon: "bi-star-fill", target: 850, suffix: "", title: "ពិន្ទុ (XP)", titleKey: "stat_xp" }
+                                    ]
+                                };
+                            }
+                            
+                            // ១. បង្កើនចំនួន "វគ្គសិក្សាកំពុងរៀន" បន្ថែម ១
+                            const inProgressStat = dashboardData.stats.find(s => s.titleKey === 'stat_in_progress');
+                            if (inProgressStat) inProgressStat.target += 1;
+                            
+                            // ២. ដាក់វគ្គសិក្សាដែលទើបទិញនេះ ចូលទៅក្នុងផ្នែក "បន្តការសិក្សា" លើ Dashboard
+                            const firstTitleEl = document.querySelector('.checkout-item-title');
+                            const purchasedCourseTitle = firstTitleEl ? firstTitleEl.textContent : 'វគ្គសិក្សាថ្មី';
+                            dashboardData.continueLearning = Object.assign({}, dashboardData.continueLearning, {
+                                courseTitle: purchasedCourseTitle,
+                                progress: 0 // ទើបទិញថ្មី មានវឌ្ឍនភាព ០%
+                            });
+                            
+                            // ៣. រក្សាទុកត្រឡប់ចូល LocalStorage វិញ
+                            localStorage.setItem('dashboard_db', JSON.stringify(dashboardData));
+                            
+                            // ៤. បន្ថែមវគ្គសិក្សាដែលទើបទិញចូលទៅក្នុង "វគ្គសិក្សារបស់ខ្ញុំ" (my_courses_db)
+                            const cartItemIds = JSON.parse(localStorage.getItem('cart_items') || '[]');
+                            const localCourses = JSON.parse(localStorage.getItem('admin_courses_db') || '[]');
+                            let myCourses = JSON.parse(localStorage.getItem('my_courses_db') || '[]');
+                            
+                            const purchasedCourses = localCourses.filter(c => cartItemIds.includes(c.id));
+                            purchasedCourses.forEach(course => {
+                                if (!myCourses.some(mc => mc.id === course.id)) {
+                                    myCourses.unshift({
+                                        id: course.id,
+                                        title: course.title,
+                                        category: course.category,
+                                        instructor: course.instructor,
+                                        instructorImg: course.instructorImg,
+                                        courseImg: course.courseImg,
+                                        progress: 0,
+                                        nextLesson: "សេចក្តីផ្តើម",
+                                        link: `learning.html?id=${course.id}`,
+                                        level: course.level || "Beginner",
+                                        priceType: course.priceType || "Paid"
+                                    });
+                                }
+                            });
+                            localStorage.setItem('my_courses_db', JSON.stringify(myCourses));
+
+                            // ៥. លុបទំនិញចេញពីកន្ត្រកក្រោយទិញរួច
+                            localStorage.removeItem('cart_items');
+                            if (window.updateCartBadge) window.updateCartBadge();
+                            
+                            // ៦. កត់ត្រាវិក្កយបត្រថ្មីចូល LocalStorage
+                            const localInvoices = localStorage.getItem('invoices_db');
+                            let invoicesData = localInvoices ? JSON.parse(localInvoices) : [];
+                            
+                            const randomInv = 'INV-' + Math.floor(100000 + Math.random() * 900000); // បង្កើតលេខកូដ 6 ខ្ទង់
+                            const d = new Date();
+                            const khmerMonths = ['មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា', 'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'];
+                            const dateString = `${d.getDate()} ${khmerMonths[d.getMonth()]} ${d.getFullYear()}`;
+                            const totalAmountText = document.getElementById('checkoutPrice').textContent;
+                            
+                            const newInvoice = {
+                                id: randomInv,
+                                course: purchasedCourseTitle,
+                                courseKey: purchasedCourseTitle, // ប្រើឈ្មោះវគ្គសិក្សាផ្ទាល់
+                                date: dateString,
+                                amount: totalAmountText
+                            };
+                            
+                            invoicesData.unshift(newInvoice); // បន្ថែមវិក្កយបត្រថ្មីទៅខាងលើគេបង្អស់
+                            localStorage.setItem('invoices_db', JSON.stringify(invoicesData));
+                        } catch (error) {
+                            console.error('បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាព Dashboard Data:', error);
+                        }
+                        // =========================================================
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ការទូទាត់ជោគជ័យ!',
+                            text: 'សូមអរគុណសម្រាប់ការទិញវគ្គសិក្សា។ វិក្កយបត្របញ្ជាក់ការបង់ប្រាក់ត្រូវបានផ្ញើទៅកាន់អ៊ីមែលរបស់អ្នក។',
+                            confirmButtonText: 'ចាប់ផ្តើមសិក្សាឥឡូវនេះ',
+                            confirmButtonColor: '#2563eb'
+                        }).then((result) => {
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.href = 'learning.html';
+                            }
+                        });
+                    }, 2000);
+                });
+            }
+
+            // ទាញយកទិន្នន័យពី JSON មកបង្ហាញ
+            async function initializeCheckout() {
+                try {
+                    // ១. ទាញយកទំនិញពីកន្ត្រក
+                    const cartItemIds = JSON.parse(localStorage.getItem('cart_items') || '[]');
+                    if (cartItemIds.length === 0) {
+                        Swal.fire({
+                            icon: 'info', title: 'កន្ត្រកទទេ', text: 'អ្នកមិនទាន់មានវគ្គសិក្សាក្នុងកន្ត្រកទេ។',
+                            confirmButtonText: 'ទៅកាន់វគ្គសិក្សា', confirmButtonColor: '#2563eb', allowOutsideClick: false
+                        }).then(() => { window.location.href = 'courses.html'; });
+                        return;
+                    }
+
+                    const localCourses = localStorage.getItem('admin_courses_db');
+                    let coursesDB = localCourses ? JSON.parse(localCourses) : [];
+                    if (!localCourses) {
+                        const response = await fetch('../assets/data/db.json');
+                        const data = await response.json();
+                        coursesDB = data.courses;
+                    }
+                    
+                    // ២. ចម្រាញ់យកវគ្គសិក្សាណាដែលមានលេខកូដក្នុងកន្ត្រក
+                    const cartCourses = coursesDB.filter(c => cartItemIds.includes(c.id));
+                    
+                    let itemsHtml = '';
+                    let totalPrice = 0;
+                    let totalOldPrice = 0;
+
+                    // ៣. គណនាតម្លៃ និងគូរកាត
+                    cartCourses.forEach(course => {
+                        const price = course.priceType === 'Free' ? 0 : parseFloat(course.price);
+                        let oldPrice = course.oldPrice ? parseFloat(course.oldPrice.replace('$', '')) : price;
+                        if (isNaN(oldPrice) || oldPrice < price) oldPrice = price;
+
+                        totalPrice += price;
+                        totalOldPrice += oldPrice;
+
+                        itemsHtml += `
+                            <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                                <img src="${course.courseImg}" class="rounded-3 object-fit-cover shadow-sm" style="width: 80px; height: 60px;" alt="">
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-1 checkout-item-title" style="font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${course.title}</h6>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="text-muted small">ដោយ ${course.instructor}</span>
+                                        <span class="fw-bold text-primary">${course.priceType === 'Free' ? 'ឥតគិតថ្លៃ' : '$' + price.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    const discount = totalOldPrice - totalPrice;
+
+                    // ៤. បញ្ជូនលទ្ធផលទៅកាន់ HTML
+                    document.getElementById('checkoutItemsContainer').innerHTML = itemsHtml;
+                    document.getElementById('checkoutOldPrice').textContent = `$${totalOldPrice.toFixed(2)}`;
+                    document.getElementById('checkoutDiscount').textContent = `-$${discount.toFixed(2)}`;
+                    document.getElementById('checkoutPrice').textContent = totalPrice === 0 ? 'ឥតគិតថ្លៃ' : `$${totalPrice.toFixed(2)}`;
+
+                } catch (error) { console.error('Failed to load checkout data:', error); }
+            }
+            initializeCheckout();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../../assets/css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <link href="../../assets/css/login.css" rel="stylesheet">
+    <style>
+        /* Animation សម្រាប់សញ្ញាខ្វៀកលោតភ្លឹបភ្លែត (Blinking Cursor) */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .typing-cursor {
+            animation: blink-cursor 1s step-end infinite;
+            color: var(--primary-color);
+        }
+
+        /* Dark Mode សម្រាប់ទំព័រ Auth */
+        body {
+            background-color: #f8fafc;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode {
+            background-color: #0f172a !important;
+        }
+        .auth-card { transition: all 0.3s ease; }
+        body.dark-mode .auth-card {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- ប៊ូតុងប្តូរ Dark/Light Mode -->
+    <button class="btn btn-light position-fixed top-0 end-0 m-4 shadow-sm border border-light-subtle" id="authThemeToggle" style="border-radius: 50%; width: 45px; height: 45px; z-index: 1000;">
+        <i class="bi bi-moon-stars-fill"></i>
+    </button>
+
+    <div class="auth-container mx-auto">
+        <div class="auth-card register-card">
+        <div class="text-center">
+            <a href="../../index.html" class="brand-logo"><i class="bi bi-mortarboard-fill text-primary"></i> Smart Learn</a>
+            <h4 class="fw-bold mb-1 mt-2"><span id="typingEffectRegister"></span><span class="typing-cursor">|</span></h4>
+            <p class="text-muted small mb-4" data-i18n="register_desc">ចូលរួមសហគមន៍របស់យើង និងចាប់ផ្តើមរៀននៅថ្ងៃនេះ។</p>
+        </div>
+
+        <form id="registerForm" novalidate>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-semibold" data-i18n="first_name_label">នាមខ្លួន</label>
+                    <input type="text" id="firstName" class="form-control" placeholder="សុខ" data-i18n="first_name_ph" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label small fw-semibold" data-i18n="last_name_label">នាមត្រកូល</label>
+                    <input type="text" id="lastName" class="form-control" placeholder="សៅ" data-i18n="last_name_ph" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-semibold" data-i18n="email_label">អាសយដ្ឋានអ៊ីមែល</label>
+                <input type="email" class="form-control" id="registerEmail" placeholder="name@example.com" data-i18n="email_ph_ex" required>
+                <div class="invalid-feedback" data-i18n="email_invalid">សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលឲ្យបានត្រឹមត្រូវ (ឧទាហរណ៍៖ name@example.com)។</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small fw-semibold" data-i18n="pwd_label">ពាក្យសម្ងាត់</label>
+                <div class="position-relative">
+                    <input type="password" class="form-control pe-5" id="registerPassword" placeholder="បង្កើតពាក្យសម្ងាត់ដែលមានសុវត្ថិភាព" data-i18n="pwd_create_ph" required>
+                    <button type="button" class="btn btn-link text-muted position-absolute end-0 top-50 translate-middle-y text-decoration-none p-0 pe-3 toggle-password">
+                        <i class="bi bi-eye-slash"></i>
+                    </button>
+                    <div class="invalid-feedback" data-i18n="pwd_length_feedback">ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ ៨ តួអក្សរ។</div>
+                </div>
+                <!-- Password Strength Meter -->
+                <div class="password-strength-meter mt-2 d-none" id="passwordStrengthContainer">
+                    <div class="d-flex gap-1 mb-1">
+                        <div class="strength-bar flex-grow-1 bg-light rounded-pill" style="height: 4px;" id="bar1"></div>
+                        <div class="strength-bar flex-grow-1 bg-light rounded-pill" style="height: 4px;" id="bar2"></div>
+                        <div class="strength-bar flex-grow-1 bg-light rounded-pill" style="height: 4px;" id="bar3"></div>
+                        <div class="strength-bar flex-grow-1 bg-light rounded-pill" style="height: 4px;" id="bar4"></div>
+                    </div>
+                    <div class="small text-muted fw-semibold" style="font-size: 11px;" id="strengthText">ពាក្យសម្ងាត់ខ្សោយ</div>
+                </div>
+            </div>
+            <div class="mb-4 form-check">
+                <input type="checkbox" class="form-check-input" id="termsCondition" required>
+                <label class="form-check-label small text-muted" for="termsCondition">
+                    ខ្ញុំយល់ព្រមតាម <a href="../about.html" target="_blank" class="text-primary text-decoration-none">លក្ខខណ្ឌប្រើប្រាស់</a> និង <a href="../about.html" target="_blank" class="text-primary text-decoration-none">គោលការណ៍ឯកជនភាព</a>
+                </label>
+            </div>
+            <div id="registerError" class="alert alert-danger d-none small py-2 mb-3 text-start"></div>
+            <button type="submit" id="registerBtn" class="btn btn-primary w-100 py-2 mb-3 fw-semibold">ចុះឈ្មោះបង្កើតគណនី</button>
+        </form>
+
+        <div class="position-relative my-4 text-center">
+            <hr class="border-secondary opacity-10">
+            <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted fw-semibold">ឬបន្តជាមួយ</span>
+        </div>
+        
+        <div class="row g-2 mb-3">
+            <div class="col-6">
+                <button type="button" id="googleLoginBtn" class="btn btn-light w-100 py-2 fw-semibold border bg-white shadow-sm" style="border-radius: 8px;">
+                    <i class="bi bi-google text-danger me-2"></i> Google
+                </button>
+            </div>
+            <div class="col-6">
+                <button type="button" id="facebookLoginBtn" class="btn w-100 py-2 fw-semibold text-white shadow-sm" style="background-color: #1877f2; border-radius: 8px;">
+                    <i class="bi bi-facebook me-2"></i> Facebook
+                </button>
+            </div>
+        </div>
+
+        <p class="text-center small text-muted mt-4 mb-0"><span data-i18n="already_have_account">មានគណនីរួចហើយមែនទេ?</span> <a href="login.html" class="text-primary fw-semibold text-decoration-none" data-i18n="login">ចូលគណនី</a></p>
+        <div class="text-center mt-3"><a href="../../index.html" class="text-muted small text-decoration-none"><i class="bi bi-arrow-left"></i> <span data-i18n="back_home">ត្រឡប់ទៅទំព័រដើម</span></a></div>
+    </div>
+    </div>
+
+    <script src="../../assets/js/components.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // វចនានុក្រមបកប្រែ
+            const pageTranslations = {
+                'km': {
+                    'register_title': 'បង្កើតគណនី', 'register_desc': 'ចូលរួមសហគមន៍របស់យើង និងចាប់ផ្តើមរៀននៅថ្ងៃនេះ។',
+                    'first_name_label': 'នាមខ្លួន', 'first_name_ph': 'សុខ',
+                    'last_name_label': 'នាមត្រកូល', 'last_name_ph': 'សៅ',
+                    'email_label': 'អាសយដ្ឋានអ៊ីមែល', 'email_ph_ex': 'name@example.com', 'email_invalid': 'សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែលឲ្យបានត្រឹមត្រូវ (ឧទាហរណ៍៖ name@example.com)។',
+                    'pwd_label': 'ពាក្យសម្ងាត់', 'pwd_create_ph': 'បង្កើតពាក្យសម្ងាត់ដែលមានសុវត្ថិភាព', 'pwd_length_feedback': 'ពាក្យសម្ងាត់ត្រូវមានយ៉ាងហោចណាស់ ៨ តួអក្សរ។',
+                    'pwd_weak': 'ពាក្យសម្ងាត់ខ្សោយ', 'pwd_medium': 'ពាក្យសម្ងាត់មធ្យម', 'pwd_strong': 'ពាក្យសម្ងាត់រឹងមាំ',
+                    'confirm_pwd_label': 'បញ្ជាក់ពាក្យសម្ងាត់', 'confirm_pwd_ph': 'បញ្ចូលពាក្យសម្ងាត់ម្តងទៀត', 'pwd_match_feedback': 'ពាក្យសម្ងាត់មិនផ្ទៀងផ្ទាត់គ្នាទេ។',
+                    'agree_terms_prefix': 'ខ្ញុំយល់ព្រមតាម', 'terms_of_use': 'លក្ខខណ្ឌប្រើប្រាស់', 'and': 'និង', 'privacy_policy': 'គោលការណ៍ឯកជនភាព',
+                    'btn_register': 'ចុះឈ្មោះបង្កើតគណនី', 'or_continue_with': 'ឬបន្តជាមួយ',
+                    'already_have_account': 'មានគណនីរួចហើយមែនទេ?', 'login': 'ចូលគណនី', 'back_home': 'ត្រឡប់ទៅទំព័រដើម',
+                    'processing': 'កំពុងដំណើរការ...', 'return_home': 'កំពុងត្រឡប់ទៅទំព័រដើមវិញ...',
+                    'email_exists': 'អាសយដ្ឋានអ៊ីមែលនេះត្រូវបានចុះឈ្មោះរួចហើយ។', 'register_success': 'បានចុះឈ្មោះជោគជ័យ'
+                },
+                'en': {
+                    'register_title': 'Create Account', 'register_desc': 'Join our community and start learning today.',
+                    'first_name_label': 'First Name', 'first_name_ph': 'John',
+                    'last_name_label': 'Last Name', 'last_name_ph': 'Doe',
+                    'email_label': 'Email Address', 'email_ph_ex': 'name@example.com', 'email_invalid': 'Please enter a valid email address (e.g., name@example.com).',
+                    'pwd_label': 'Password', 'pwd_create_ph': 'Create a secure password', 'pwd_length_feedback': 'Password must be at least 8 characters long.',
+                    'pwd_weak': 'Weak Password', 'pwd_medium': 'Medium Password', 'pwd_strong': 'Strong Password',
+                    'confirm_pwd_label': 'Confirm Password', 'confirm_pwd_ph': 'Enter your password again', 'pwd_match_feedback': 'Passwords do not match.',
+                    'agree_terms_prefix': 'I agree to the', 'terms_of_use': 'Terms of Use', 'and': 'and', 'privacy_policy': 'Privacy Policy',
+                    'btn_register': 'Sign Up', 'or_continue_with': 'Or continue with',
+                    'already_have_account': 'Already have an account?', 'login': 'Sign In', 'back_home': 'Back to Home',
+                    'processing': 'Processing...', 'return_home': 'Returning to home...',
+                    'email_exists': 'This email address is already registered.', 'register_success': 'Successfully registered'
+                }
+            };
+
+            function applyPageTranslations() {
+                const lang = localStorage.getItem('language') || 'km';
+                const t = pageTranslations[lang] || pageTranslations['km'];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (t[key]) {
+                        if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) el.placeholder = t[key];
+                        else el.innerHTML = t[key];
+                    }
+                });
+                
+                // Typing effect update
+                const textRegister = t['register_title'];
+                const typingElementRegister = document.getElementById('typingEffectRegister');
+                if (window.registerTypingTimeout) clearTimeout(window.registerTypingTimeout);
+                
+                if (typingElementRegister) {
+                    typingElementRegister.innerHTML = '';
+                    let indexRegister = 0;
+                    function typeWriterRegister() {
+                        if (indexRegister < textRegister.length) {
+                            typingElementRegister.innerHTML += textRegister.charAt(indexRegister);
+                            indexRegister++;
+                            window.registerTypingTimeout = setTimeout(typeWriterRegister, 120);
+                        }
+                    }
+                    typeWriterRegister();
+                }
+            }
+            document.addEventListener('languageChanged', applyPageTranslations);
+            applyPageTranslations();
+
+            // មុខងារប្តូរ Dark Mode
+            const authThemeToggle = document.getElementById('authThemeToggle');
+            if (authThemeToggle) {
+                if (document.body.classList.contains('dark-mode')) authThemeToggle.querySelector('i').className = 'bi bi-sun-fill text-warning';
+                authThemeToggle.addEventListener('click', function() {
+                    if (window.toggleTheme) window.toggleTheme();
+                    const isDark = document.body.classList.contains('dark-mode');
+                    this.querySelector('i').className = isDark ? 'bi bi-sun-fill text-warning' : 'bi bi-moon-stars-fill';
+                });
+            }
+
+            // មុខងារសម្រាប់ត្រួតពិនិត្យ (Validate) Form មុនពេល Submit
+            const registerForm = document.getElementById('registerForm');
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const emailInput = document.getElementById('registerEmail');
+            const passwordInputElem = document.getElementById('registerPassword');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const registerBtn = document.getElementById('registerBtn');
+            const registerError = document.getElementById('registerError');
+            
+            // មុខងារត្រួតពិនិត្យភាពខ្លាំងនៃពាក្យសម្ងាត់ (Password Strength Meter)
+            const strengthContainer = document.getElementById('passwordStrengthContainer');
+            const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+            const strengthText = document.getElementById('strengthText');
+
+            if (passwordInputElem && strengthContainer) {
+                passwordInputElem.addEventListener('input', function() {
+                    const val = this.value;
+                    const lang = localStorage.getItem('language') || 'km';
+                    const t = pageTranslations[lang] || pageTranslations['km'];
+
+                    if (val.length > 0) {
+                        strengthContainer.classList.remove('d-none');
+                    } else {
+                        strengthContainer.classList.add('d-none');
+                        return;
+                    }
+
+                    let strength = 0;
+                    if (val.length >= 8) strength += 1;
+                    if (val.match(/[a-z]/) && val.match(/[A-Z]/)) strength += 1;
+                    if (val.match(/\d/)) strength += 1;
+                    if (val.match(/[^a-zA-Z\d]/)) strength += 1;
+
+                    bars.forEach(bar => bar.className = 'strength-bar flex-grow-1 bg-light rounded-pill');
+
+                    if (strength <= 1) {
+                        bars[0].classList.replace('bg-light', 'bg-danger');
+                        if (strength === 1) bars[1].classList.replace('bg-light', 'bg-danger');
+                        strengthText.textContent = t['pwd_weak'];
+                        strengthText.className = 'small fw-semibold text-danger';
+                    } else if (strength === 2 || strength === 3) {
+                        bars[0].classList.replace('bg-light', 'bg-warning');
+                        bars[1].classList.replace('bg-light', 'bg-warning');
+                        bars[2].classList.replace('bg-light', 'bg-warning');
+                        strengthText.textContent = t['pwd_medium'];
+                        strengthText.className = 'small fw-semibold text-warning';
+                    } else if (strength >= 4) {
+                        bars.forEach(bar => bar.classList.replace('bg-light', 'bg-success'));
+                        strengthText.textContent = t['pwd_strong'];
+                        strengthText.className = 'small fw-semibold text-success';
+                    }
+                });
+            }
+
+            // ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ទាំង២ពេលកំពុងវាយ
+            if (passwordInputElem && confirmPasswordInput) {
+                const validateMatch = () => {
+                    const lang = localStorage.getItem('language') || 'km';
+                    const t = pageTranslations[lang] || pageTranslations['km'];
+
+                    if (confirmPasswordInput.value && confirmPasswordInput.value !== passwordInputElem.value) {
+                        confirmPasswordInput.setCustomValidity(t['pwd_match_feedback']);
+                    } else {
+                        confirmPasswordInput.setCustomValidity('');
+                    }
+                };
+                passwordInputElem.addEventListener('input', validateMatch);
+                confirmPasswordInput.addEventListener('input', validateMatch);
+            }
+
+            if (registerForm) {
+                registerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const lang = localStorage.getItem('language') || 'km';
+                    const t = pageTranslations[lang] || pageTranslations['km'];
+
+                    if (passwordInputElem.value !== confirmPasswordInput.value) {
+                        confirmPasswordInput.setCustomValidity(t['pwd_match_feedback']);
+                    }
+
+                    if (!registerForm.checkValidity()) {
+                        e.stopPropagation();
+                        registerForm.classList.add('was-validated');
+                        return;
+                    }
+
+                    const firstName = firstNameInput.value.trim();
+                    const lastName = lastNameInput.value.trim();
+                    const email = emailInput.value.trim();
+                    const password = passwordInputElem.value;
+
+                    // កំណត់ពាក្យបង្ហាញតាមលក្ខខណ្ឌ Redirect
+                    const redirectUrlTarget = sessionStorage.getItem('redirectUrl');
+                    const loadingText = redirectUrlTarget ? t['return_home'] : t['processing'];
+
+                    const originalText = registerBtn.innerHTML;
+                    registerBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${loadingText}`;
+                    registerBtn.disabled = true;
+                    if (registerError) registerError.classList.add('d-none');
+
+                    setTimeout(() => {
+                        let users = JSON.parse(localStorage.getItem('smartlearn_users') || '[]');
+                        const userExists = users.some(user => user.email === email);
+
+                        if (userExists) {
+                            if (registerError) {
+                                registerError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-1"></i> ${t['email_exists']}`;
+                                registerError.classList.remove('d-none');
+                            }
+                            registerBtn.innerHTML = originalText;
+                            registerBtn.disabled = false;
+                        } else {
+                            // Encrypt the password before storing
+                            const hashedPassword = CryptoJS.SHA256(password).toString();
+                            const newUser = { firstName, lastName, email, password: hashedPassword };
+                            users.push(newUser);
+                            localStorage.setItem('smartlearn_users', JSON.stringify(users));
+
+                            // Auto-login បន្ទាប់ពីចុះឈ្មោះរួច
+                            localStorage.setItem('profile_firstName', firstName);
+                            localStorage.setItem('profile_lastName', lastName);
+                            localStorage.setItem('profile_email', email);
+                            localStorage.setItem('isLoggedIn', 'true');
+                            localStorage.setItem('showRegisterWelcome', 'true');
+
+                            registerBtn.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ${t['register_success']}`;
+                            registerBtn.classList.replace('btn-primary', 'btn-success');
+
+                            setTimeout(() => { 
+                                const redirectUrl = sessionStorage.getItem('redirectUrl') || '../dashboard.html';
+                                sessionStorage.removeItem('redirectUrl');
+                                window.location.href = redirectUrl; 
+                            }, 1500);
+                        }
+                    }, 1000);
+                });
+            }
+
+            // មុខងារចូលគណនីតាមរយៈបណ្តាញសង្គម (Social Login)
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
+            const facebookLoginBtn = document.getElementById('facebookLoginBtn');
+            
+            if (googleLoginBtn) {
+                googleLoginBtn.addEventListener('click', async function() {
+                    try {
+                        const originalText = this.innerHTML;
+                        
+                        const redirectUrlTarget = sessionStorage.getItem('redirectUrl');
+                        const loadingText = redirectUrlTarget ? 'កំពុងត្រឡប់ទៅទំព័រដើមវិញ...' : 'កំពុងភ្ជាប់...';
+                        this.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${loadingText}`;
+                        this.disabled = true;
+
+                        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
+                        const { getAuth, signInWithPopup, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js');
+
+                        // ⚠️ ចំណាំ៖ ជំនួស firebaseConfig នេះជាមួយកូដដែលបងទទួលបានពី Firebase Console
+                        const firebaseConfig = {
+                            apiKey: "YOUR_API_KEY",
+                            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+                            projectId: "YOUR_PROJECT_ID"
+                        };
+
+                        const app = initializeApp(firebaseConfig);
+                        const auth = getAuth(app);
+                        const provider = new GoogleAuthProvider();
+
+                        const result = await signInWithPopup(auth, provider);
+                        const user = result.user;
+
+                        const names = user.displayName ? user.displayName.split(' ') : ['Google', 'User'];
+                        localStorage.setItem('profile_firstName', names[0]);
+                        localStorage.setItem('profile_lastName', names.slice(1).join(' ') || '');
+                        localStorage.setItem('profile_email', user.email);
+                        if(user.photoURL) localStorage.setItem('profile_image', user.photoURL);
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('showLoginToast', 'true');
+                        localStorage.setItem('showRegisterWelcome', 'true');
+                        
+                        const redirectUrl = sessionStorage.getItem('redirectUrl') || '../dashboard.html';
+                        sessionStorage.removeItem('redirectUrl');
+                        window.location.href = redirectUrl;
+                    } catch (error) {
+                        console.error("Firebase Auth Error:", error);
+                        if(typeof Swal !== 'undefined') Swal.fire('បញ្ហា', 'ចុះឈ្មោះជាមួយ Google ទទួលបរាជ័យ។', 'error');
+                        this.innerHTML = '<i class="bi bi-google text-danger me-2"></i> Google';
+                        this.disabled = false;
+                    }
+                });
+            }
+            if (facebookLoginBtn) facebookLoginBtn.addEventListener('click', () => window.location.href = 'login.html');
+        });
+    </script>
+</body>
+</html>

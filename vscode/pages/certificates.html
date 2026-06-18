@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - វិញ្ញាបនបត្រ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <style>
+        /* រចនាទម្រង់អូសបញ្ដេក (Horizontal Scroll) សម្រាប់វិញ្ញាបនបត្រ */
+        .horizontal-scroll-container {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding-top: 0.5rem;
+            padding-bottom: 1.5rem; /* ទុកចន្លោះខាងក្រោមសម្រាប់ Scrollbar និង Shadow */
+            scrollbar-width: thin;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .certificate-card-wrapper {
+            flex: 0 0 auto;
+            width: 350px;
+        }
+        @media (max-width: 575.98px) {
+            .certificate-card-wrapper {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+    <aside class="dashboard-sidebar" id="app-sidebar"></aside>
+
+    <div class="dashboard-main-view">
+        <div class="workspace-container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h1 class="h3 fw-bold m-0" style="font-weight: 800; font-size: 28px;">វិញ្ញាបនបត្ររបស់ខ្ញុំ</h1>
+                    <p class="text-muted small m-0 mt-1">មើល ទាញយក និងចែករំលែកវិញ្ញាបនបត្រដែលអ្នកទទួលបានពីវគ្គសិក្សា។</p>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <div class="position-relative">
+                        <input type="text" id="certSearchInput" class="form-control" placeholder="ស្វែងរកវិញ្ញាបនបត្រ..." style="border-radius: 8px; padding-right: 35px; width: 260px;">
+                        <i class="bi bi-search position-absolute text-muted" style="right: 12px; top: 10px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="horizontal-scroll-container" id="certificates-grid"></div>
+        </div>
+    </div>
+
+    <!-- Certificate Modal Pop-up -->
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow" style="border-radius: 20px; border: none;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center px-4 px-md-5 pb-5 pt-0">
+                    <div class="mb-4">
+                        <h3 class="fw-bold mb-1">វិញ្ញាបនបត្របញ្ជាក់ការសិក្សា</h3>
+                        <p class="text-muted small">នេះជាការបញ្ជាក់ថាអ្នកបានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ។</p>
+                    </div>
+                    
+                    <div id="certificateContent" class="bg-light p-4 rounded-4 border border-light-subtle position-relative mb-4" style="background: linear-gradient(135deg, #f8fafc, #f1f5f9);">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 rounded-4" style="border: 8px solid #e2e8f0; pointer-events: none;"></div>
+                        <div class="py-5">
+                            <i class="bi bi-award-fill text-warning mb-3 d-inline-block" style="font-size: 50px;"></i>
+                            <h2 class="fw-bold text-dark mb-4" style="font-family: 'Times New Roman', serif; font-size: 36px;">John Doe</h2>
+                            <p class="text-muted mb-2">បានបញ្ចប់វគ្គសិក្សាដោយជោគជ័យ</p>
+                            <h4 class="fw-bold text-primary mb-4" id="modalCertCourse">ឈ្មោះវគ្គសិក្សា</h4>
+                            <div class="d-flex justify-content-center gap-5 text-muted small">
+                                <div>
+                                    <div class="fw-bold text-dark border-bottom border-dark pb-1 mb-1" style="font-size: 14px;" id="modalCertDate">DD MM YYYY</div>
+                                    <div>កាលបរិច្ឆេទ</div>
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark border-bottom border-dark pb-1 mb-1" style="font-size: 14px;" id="modalCertId">ID</div>
+                                    <div>លេខសម្គាល់វិញ្ញាបនបត្រ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary fw-semibold px-4 py-2" data-bs-dismiss="modal" style="border-radius: 10px;">បិទ</button>
+                        <button type="button" id="printCertBtn" class="btn btn-secondary fw-semibold px-4 py-2" style="border-radius: 10px;"><i class="bi bi-printer me-1"></i> បោះពុម្ព</button>
+                        <button type="button" id="downloadImgBtn" class="btn btn-outline-primary fw-semibold px-4 py-2" style="border-radius: 10px;"><i class="bi bi-image me-1"></i> ទាញយករូបភាព</button>
+                        <button type="button" id="downloadCertBtn" class="btn btn-primary fw-semibold px-4 py-2" style="border-radius: 10px;"><i class="bi bi-download me-1"></i> ទាញយក PDF</button>
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn btn-light fw-semibold px-4 py-2 border" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 10px;"><i class="bi bi-share me-1"></i> ចែករំលែក</button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px;">
+                                <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="shareToSocial('facebook', event)"><i class="bi bi-facebook text-primary me-2"></i> Facebook</a></li>
+                                <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="shareToSocial('twitter', event)"><i class="bi bi-twitter-x text-dark me-2"></i> Twitter / X</a></li>
+                                <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="shareToSocial('linkedin', event)"><i class="bi bi-linkedin text-info me-2"></i> LinkedIn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="copyCertLink(event, this)"><i class="bi bi-link-45deg text-secondary me-2 fs-5"></i> ចម្លងតំណភ្ជាប់</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Public Footer Component -->
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/sidebar.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let certificatesData = [];
+
+            const gridContainer = document.getElementById("certificates-grid");
+            const searchInput = document.getElementById("certSearchInput");
+            
+            // ២. ដំណើរការ Render
+            function renderCertificates(searchTerm = '') {
+                if (!gridContainer) return;
+
+                const filteredCerts = certificatesData.filter(cert => 
+                    cert.course.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                    cert.id.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+
+                if (filteredCerts.length === 0) {
+                    gridContainer.innerHTML = '<div class="text-center py-5 w-100"><h5 class="text-muted">រកមិនឃើញវិញ្ញាបនបត្រដែលអ្នកស្វែងរកទេ</h5></div>';
+                } else {
+                    gridContainer.innerHTML = filteredCerts.map(cert => `
+                        <div class="certificate-card-wrapper">
+                            <div class="certificate-card border border-light-subtle rounded-4 p-4 bg-white shadow-sm h-100 d-flex flex-column text-center">
+                                <div class="mb-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle" style="width: 70px; height: 70px;">
+                                        <i class="bi bi-award-fill" style="font-size: 32px;"></i>
+                                    </div>
+                                </div>
+                                <h5 class="fw-bold mb-2 text-dark" style="font-size: 16px;">${cert.course}</h5>
+                                <p class="text-muted small mb-4">បានបញ្ចប់នៅ: ${cert.date}</p>
+                                <div class="mt-auto pt-3 border-top d-flex gap-2">
+                                    <button class="btn btn-outline-primary btn-sm flex-grow-1 view-cert-btn" data-bs-toggle="modal" data-bs-target="#certificateModal" data-course="${cert.course}" data-date="${cert.date}" data-id="${cert.id}">មើល</button>
+                                    <button class="btn btn-primary btn-sm flex-grow-1"><i class="bi bi-download"></i> ទាញយក</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                // ៣. ដំណើរការទាញទិន្នន័យដាក់ចូល Modal Preview
+                const viewBtns = document.querySelectorAll('.view-cert-btn');
+                viewBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.getElementById('modalCertCourse').textContent = this.getAttribute('data-course');
+                        document.getElementById('modalCertDate').textContent = this.getAttribute('data-date');
+                        document.getElementById('modalCertId').textContent = this.getAttribute('data-id');
+                    });
+                });
+            }
+
+
+            // មុខងារស្វែងរកពេលវាយបញ្ចូលអក្សរ
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    renderCertificates(e.target.value);
+                });
+            }
+
+            // ៤. មុខងារទាញយកវិញ្ញាបនបត្រជា PDF
+            const downloadBtn = document.getElementById('downloadCertBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    const certContent = document.getElementById('certificateContent');
+                    const certId = document.getElementById('modalCertId').textContent;
+                    const originalText = this.innerHTML;
+
+                    // បង្ហាញ Loading state
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> កំពុងទាញយក...';
+                    this.disabled = true;
+
+                    html2canvas(certContent, {
+                        scale: 2, // បង្កើនគុណភាពរូបភាព
+                        useCORS: true
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('l', 'mm', 'a4'); // Landscape, millimeters, A4
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = pdf.internal.pageSize.getHeight();
+                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                        pdf.save(`Certificate-${certId}.pdf`);
+
+                        // ត្រឡប់ប៊ូតុងទៅសភាពដើមវិញ
+                        downloadBtn.innerHTML = originalText;
+                        downloadBtn.disabled = false;
+                    });
+                });
+            }
+
+            // មុខងារបោះពុម្ពវិញ្ញាបនបត្រ
+            const printBtn = document.getElementById('printCertBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+
+            // ៥. មុខងារទាញយកវិញ្ញាបនបត្រជារូបភាព (PNG)
+            const downloadImgBtn = document.getElementById('downloadImgBtn');
+            if (downloadImgBtn) {
+                downloadImgBtn.addEventListener('click', function() {
+                    const certContent = document.getElementById('certificateContent');
+                    const certId = document.getElementById('modalCertId').textContent;
+                    const originalText = this.innerHTML;
+
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> កំពុងដំណើរការ...';
+                    this.disabled = true;
+
+                    html2canvas(certContent, { scale: 2, useCORS: true }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = `Certificate-${certId}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+
+                        // ត្រឡប់ប៊ូតុងទៅសភាពដើមវិញ
+                        downloadImgBtn.innerHTML = originalText;
+                        downloadImgBtn.disabled = false;
+                    }).catch(err => {
+                        console.error('Error generating image:', err);
+                        downloadImgBtn.innerHTML = originalText;
+                        downloadImgBtn.disabled = false;
+                    });
+                });
+            }
+
+            // ៦. មុខងារចែករំលែក (Share to Social Media)
+            window.shareToSocial = function(platform, event) {
+                event.preventDefault();
+                const certCourse = document.getElementById('modalCertCourse').textContent;
+                const url = encodeURIComponent(window.location.href);
+                const text = encodeURIComponent(`ខ្ញុំទើបតែទទួលបានវិញ្ញាបនបត្របញ្ជាក់ការសិក្សាពីវគ្គ "${certCourse}" នៅលើ Smart Learn! 🎓✨`);
+                
+                let shareUrl = '';
+                if (platform === 'facebook') shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                if (platform === 'linkedin') shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            };
+
+            window.copyCertLink = function(event, element) {
+                event.preventDefault();
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalHtml = element.innerHTML;
+                    element.innerHTML = '<i class="bi bi-check2 text-success me-2 fs-5"></i> បានចម្លង!';
+                    setTimeout(() => { element.innerHTML = originalHtml; }, 2000);
+                });
+            };
+            
+            // ទាញយកទិន្នន័យពី LocalStorage
+            async function initializePage() {
+                try {
+                    // អានទិន្នន័យពី LocalStorage ជាមុនសិន
+                    const localCertificates = localStorage.getItem('certificates_db');
+                    
+                    if (localCertificates) {
+                        certificatesData = JSON.parse(localCertificates);
+                    } else {
+                        // ទិន្នន័យបម្រុង (Fallback Data) ក្នុងករណីមិនទាន់មានទិន្នន័យក្នុង LocalStorage
+                        certificatesData = [
+                            { id: "UC-A1B2C3", course: "វគ្គបណ្តុះបណ្តាលការអភិវឌ្ឍគេហទំព័រពេញលេញ 2026", date: "15 មីនា 2026" },
+                            { id: "UC-D4E5F6", course: "Google UX Design Professional Certificate", date: "10 កុម្ភៈ 2026" },
+                            { id: "UC-G7H8I9", course: "Python for Data Science", date: "05 មករា 2026" }
+                        ];
+                    }
+                    
+                    renderCertificates();
+                } catch (error) {
+                    console.error('Failed to load certificates data:', error);
+                    if (gridContainer) gridContainer.innerHTML = '<div class="text-center py-5 w-100"><h5 class="text-danger">Failed to load data. Please try again later.</h5></div>';
+                }
+            }
+            initializePage();
+        });
+    </script>
+</body>
+</html>

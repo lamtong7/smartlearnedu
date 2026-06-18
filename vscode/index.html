@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn - វេទិកាសិក្សាតាមអនឡាញឈានមុខគេ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- ភ្ជាប់ឯកសារ CSS រួម -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/animations.css" rel="stylesheet">
+    <link href="assets/css/home.css" rel="stylesheet">
+
+    <style>
+        /* Animation សម្រាប់សញ្ញាខ្វៀកលោតភ្លឹបភ្លែត (Blinking Cursor) */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .typing-cursor {
+            animation: blink-cursor 1s step-end infinite;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Public Navbar Component -->
+    <div id="public-navbar"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section-clean border-bottom border-light-subtle">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 z-1 fade-in-scale">
+                    <span class="modern-badge px-4 py-2 rounded-pill mb-4 d-inline-block fw-bold text-uppercase" style="font-size: 13px;">
+                        ជំនាន់ថ្មីនៃការសិក្សា
+                    </span>
+                    <h1 class="fw-bold mb-4" style="font-size: 4rem; line-height: 1.15; letter-spacing: -1.5px;">
+                        អភិវឌ្ឍសមត្ថភាពជាមួយ<br>
+                        <span class="text-gradient pb-2" id="typingEffect"></span><span class="text-gradient typing-cursor">|</span>
+                    </h1>
+                    <p class="text-muted fs-5 mb-5 lh-lg" style="max-width: 560px;">
+                        វេទិកាសិក្សាតាមអនឡាញដែលរចនាឡើងយ៉ាងសាមញ្ញ ទំនើប និងផ្តល់នូវបទពិសោធន៍សិក្សាដ៏ល្អឥតខ្ចោះ។ ចាប់ផ្តើមដំណើរឆ្ពោះទៅកាន់ភាពជោគជ័យរបស់អ្នកថ្ងៃនេះ។
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="pages/courses.html" class="btn btn-primary btn-modern px-5 py-3 fw-bold rounded-pill shadow-sm btn-vibrate" style="font-size: 16px;">
+                            ស្វែងរកវគ្គសិក្សា
+                        </a>
+                        <a href="pages/dashboard.html" class="btn btn-light bg-white border border-light-subtle btn-modern px-5 py-3 fw-bold rounded-pill shadow-sm text-dark" style="font-size: 16px;">
+                            ចូលគណនី <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 z-1 position-relative">
+                    <div class="animate-float" style="animation-duration: 6s;">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1000&auto=format&fit=crop&q=80" alt="Learning" class="img-fluid rounded-5 shadow-lg" style="border: 10px solid rgba(255,255,255,0.4);">
+                        
+                        <!-- Floating Glass Card Over Image -->
+                        <div class="glass-card position-absolute p-4 rounded-4" style="bottom: -20px; left: -30px; min-width: 260px;">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 52px; height: 52px;">
+                                    <i class="bi bi-graph-up-arrow fs-4"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small fw-semibold">វឌ្ឍនភាពសិក្សា</div>
+                                    <div class="fw-bold fs-4 text-dark">+85%</div>
+                                </div>
+                            </div>
+                            <div class="progress" style="height: 8px; border-radius: 4px;">
+                                <div class="progress-bar bg-success" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 my-5">
+        <div class="container">
+            <div class="text-center mb-5 pb-3 reveal-on-scroll">
+                <h2 class="fw-bold mb-3" style="font-size: 2.8rem; letter-spacing: -0.5px;">រចនាឡើងសម្រាប់អ្នក</h2>
+                <p class="text-muted mx-auto fs-5" style="max-width: 650px;">
+                    យើងផ្តោតលើភាពសាមញ្ញ និងប្រសិទ្ធភាព ដើម្បីធានាថាអ្នកទទួលបានបទពិសោធន៍សិក្សាដ៏អស្ចារ្យ។
+                </p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="feature-card-clean h-100 text-center">
+                        <div class="feature-icon-wrapper mx-auto text-primary"><i class="bi bi-lightning-charge"></i></div>
+                        <h4 class="fw-bold mb-3 fs-5">លឿន និងរលូន</h4>
+                        <p class="text-muted mb-0">ចំណុចប្រទាក់ដែលមិនស្មុគស្មាញ អនុញ្ញាតឱ្យអ្នកផ្តោតលើការសិក្សាដោយគ្មានការរំខាន។</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="feature-card-clean h-100 text-center">
+                        <div class="feature-icon-wrapper mx-auto text-purple" style="color: var(--color-purple);"><i class="bi bi-laptop"></i></div>
+                        <h4 class="fw-bold mb-3 fs-5">ដំណើរការគ្រប់ឧបករណ៍</h4>
+                        <p class="text-muted mb-0">សិក្សាបានយ៉ាងងាយស្រួលទាំងនៅលើកុំព្យូទ័រ ថេប្លេត និងទូរស័ព្ទដៃរបស់អ្នក។</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 300ms;">
+                    <div class="feature-card-clean h-100 text-center">
+                        <div class="feature-icon-wrapper mx-auto text-pink" style="color: var(--color-pink);"><i class="bi bi-shield-check"></i></div>
+                        <h4 class="fw-bold mb-3 fs-5">គុណភាពខ្ពស់</h4>
+                        <p class="text-muted mb-0">មាតិកាដែលត្រូវបានរៀបចំយ៉ាងល្អិតល្អន់ ដោយអ្នកជំនាញដែលមានបទពិសោធន៍ពិតប្រាកដ។</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses Section -->
+    <section class="py-5 bg-white border-top border-light-subtle">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-end mb-5 reveal-on-scroll">
+                <div>
+                    <h2 class="fw-bold mb-2">វគ្គសិក្សាពេញនិយម</h2>
+                    <p class="text-muted mb-0">ជ្រើសរើសវគ្គសិក្សាដែលកំពុងទទួលបានការចាប់អារម្មណ៍ខ្លាំងជាងគេ</p>
+                </div>
+                <a href="pages/courses.html" class="btn btn-outline-primary fw-semibold rounded-pill d-none d-md-inline-block px-4">មើលទាំងអស់ <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Course 1 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="course-card h-100 bg-white border border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600" class="w-100" style="height: 200px; object-fit: cover;" alt="Web Dev">
+                            <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm">លក់ដាច់បំផុត</span>
+                        </div>
+                        <div class="p-4 d-flex flex-column h-100">
+                            <span class="text-primary fw-bold small mb-2 text-uppercase">ការអភិវឌ្ឍន៍</span>
+                            <h5 class="fw-bold mb-3" style="line-height: 1.4;"><a href="pages/course-detail.html?id=1" class="text-dark text-decoration-none">វគ្គបណ្តុះបណ្តាលការអភិវឌ្ឍគេហទំព័រពេញលេញ 2026</a></h5>
+                            <div class="d-flex justify-content-between align-items-center pt-3 mt-auto border-top border-light-subtle">
+                                <div class="text-warning small fw-bold"><i class="bi bi-star-fill"></i> 4.8 <span class="text-muted fw-normal">(120)</span></div>
+                                <div class="fw-bold text-primary fs-5">$49.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 2 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="course-card h-100 bg-white border border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600" class="w-100" style="height: 200px; object-fit: cover;" alt="UI/UX">
+                            <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm">ពេញនិយម</span>
+                        </div>
+                        <div class="p-4 d-flex flex-column h-100">
+                            <span class="text-primary fw-bold small mb-2 text-uppercase">ការរចនា</span>
+                            <h5 class="fw-bold mb-3" style="line-height: 1.4;"><a href="pages/course-detail.html?id=2" class="text-dark text-decoration-none">ថ្នាក់ជំនាញរចនា UI/UX ជាមួយ Figma</a></h5>
+                            <div class="d-flex justify-content-between align-items-center pt-3 mt-auto border-top border-light-subtle">
+                                <div class="text-warning small fw-bold"><i class="bi bi-star-fill"></i> 4.9 <span class="text-muted fw-normal">(350)</span></div>
+                                <div class="fw-bold text-primary fs-5">$39.99</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 3 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 300ms;">
+                    <div class="course-card h-100 bg-white border border-light-subtle rounded-4 overflow-hidden shadow-sm">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600" class="w-100" style="height: 200px; object-fit: cover;" alt="Business">
+                            <span class="badge bg-success position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm">ឥតគិតថ្លៃ</span>
+                        </div>
+                        <div class="p-4 d-flex flex-column h-100">
+                            <span class="text-primary fw-bold small mb-2 text-uppercase">អាជីវកម្ម</span>
+                            <h5 class="fw-bold mb-3" style="line-height: 1.4;"><a href="pages/course-detail.html?id=14" class="text-dark text-decoration-none">ការវិភាគទិន្នន័យអាជីវកម្មអនឡាញ</a></h5>
+                            <div class="d-flex justify-content-between align-items-center pt-3 mt-auto border-top border-light-subtle">
+                                <div class="text-warning small fw-bold"><i class="bi bi-star-fill"></i> 4.7 <span class="text-muted fw-normal">(145)</span></div>
+                                <div class="fw-bold text-success fs-5">ឥតគិតថ្លៃ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile View All Button -->
+            <div class="text-center mt-4 d-md-none reveal-on-scroll">
+                <a href="pages/courses.html" class="btn btn-outline-primary fw-semibold rounded-pill w-100 px-4 py-2">មើលទាំងអស់ <i class="bi bi-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-light border-top border-light-subtle" id="statsSection">
+        <div class="container py-4">
+            <div class="row text-center g-4">
+                <div class="col-6 col-md-3 reveal-on-scroll" style="transition-delay: 0ms;">
+                    <div class="stat-card-clean">
+                        <div class="stat-icon-wrapper mb-3 text-primary mx-auto"><i class="bi bi-people-fill fs-3"></i></div>
+                        <h2 class="display-5 fw-bold mb-1 stat-counter-home text-dark" data-target="50" data-suffix="K+">0</h2>
+                        <p class="mb-0 text-muted fw-semibold">សិស្សសកម្ម</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="stat-card-clean">
+                        <div class="stat-icon-wrapper mb-3 text-success mx-auto"><i class="bi bi-journal-album fs-3"></i></div>
+                        <h2 class="display-5 fw-bold mb-1 stat-counter-home text-dark" data-target="120" data-suffix="+">0</h2>
+                        <p class="mb-0 text-muted fw-semibold">វគ្គសិក្សា</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="stat-card-clean">
+                        <div class="stat-icon-wrapper mb-3 text-warning mx-auto"><i class="bi bi-person-video3 fs-3"></i></div>
+                        <h2 class="display-5 fw-bold mb-1 stat-counter-home text-dark" data-target="45" data-suffix="+">0</h2>
+                        <p class="mb-0 text-muted fw-semibold">គ្រូបង្រៀនជំនាញ</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 reveal-on-scroll" style="transition-delay: 300ms;">
+                    <div class="stat-card-clean">
+                        <div class="stat-icon-wrapper mb-3 text-danger mx-auto"><i class="bi bi-star-fill fs-3"></i></div>
+                        <h2 class="display-5 fw-bold mb-1 stat-counter-home text-dark" data-target="99" data-suffix="%">0</h2>
+                        <p class="mb-0 text-muted fw-semibold">អត្រាពេញចិត្ត</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light border-top border-light-subtle">
+        <div class="container py-4">
+            <div class="text-center mb-5 reveal-on-scroll">
+                <h2 class="fw-bold text-dark mb-3">មតិយោបល់សិស្ស</h2>
+                <p class="text-muted mx-auto fs-6" style="max-width: 600px;">ស្តាប់ពីបទពិសោធន៍ពិតៗរបស់សិស្សដែលបានបញ្ចប់វគ្គសិក្សា និងទទួលបានភាពជោគជ័យជាមួយ Smart Learn។</p>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Testimonial 1 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 100ms;">
+                    <div class="testimonial-card h-100 shadow-sm border-0 bg-white d-flex flex-column">
+                        <div class="d-flex text-warning mb-3 fs-6">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="testimonial-text flex-grow-1">"វគ្គសិក្សានេះពិតជាអស្ចារ្យណាស់! ខ្ញុំបានរៀនច្រើនមែនទែនពីចំណុចសូន្យរហូតដល់អាចបង្កើតគេហទំព័រដោយខ្លួនឯងបានក្នុងរយៈពេលត្រឹមតែ ៣ ខែប៉ុណ្ណោះ។"</p>
+                        <div class="testimonial-user mt-4 pt-3 border-top border-light-subtle">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Lisa Wong">
+                            <div>
+                                <h6 class="user-name text-dark">Lisa Wong</h6>
+                                <p class="user-role">សិស្ស Web Development</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 200ms;">
+                    <div class="testimonial-card h-100 shadow-sm border-0 bg-white d-flex flex-column">
+                        <div class="d-flex text-warning mb-3 fs-6">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                        </div>
+                        <p class="testimonial-text flex-grow-1">"មាតិកាល្អ និងមានការអនុវត្តជាក់ស្តែងច្រើន។ ខ្ញុំសូមណែនាំវគ្គនេះសម្រាប់អ្នកដែលចង់ចាប់ផ្តើមរៀនពីការរចនា UI/UX ពិតប្រាកដ!"</p>
+                        <div class="testimonial-user mt-4 pt-3 border-top border-light-subtle">
+                            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100" alt="Michael Chen">
+                            <div>
+                                <h6 class="user-name text-dark">Michael Chen</h6>
+                                <p class="user-role">សិស្ស UI/UX Design</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="col-md-4 reveal-on-scroll" style="transition-delay: 300ms;">
+                    <div class="testimonial-card h-100 shadow-sm border-0 bg-white d-flex flex-column">
+                        <div class="d-flex text-warning mb-3 fs-6">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="testimonial-text flex-grow-1">"តម្លៃសមរម្យ ហើយគុណភាពលើសពីការរំពឹងទុក។ ខ្ញុំទទួលបានចំណេះដឹងផ្នែកទីផ្សារឌីជីថល ដែលអាចយកមកប្រើប្រាស់ក្នុងអាជីវកម្មផ្ទាល់ខ្លួនបានភ្លាមៗ។"</p>
+                        <div class="testimonial-user mt-4 pt-3 border-top border-light-subtle">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Sarah Connor">
+                            <div>
+                                <h6 class="user-name text-dark">Sarah Connor</h6>
+                                <p class="user-role">ម្ចាស់អាជីវកម្មខ្នាតតូច</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5 mb-5 pb-5">
+        <div class="container reveal-on-scroll">
+            <div class="cta-section-clean text-center">
+                <div class="blob-shape blob-1"></div>
+                <div class="blob-shape blob-2"></div>
+                
+                <div class="z-1">
+                    <h2 class="fw-bold display-5 mb-4 text-dark" style="letter-spacing: -1px;">ត្រៀមខ្លួនដើម្បីចាប់ផ្តើមហើយឬនៅ?</h2>
+                    <p class="fs-5 text-muted mb-5 mx-auto" style="max-width: 650px;">
+                        ចូលរួមជាមួយយើងថ្ងៃនេះ និងបើកទ្វារឆ្ពោះទៅរកឱកាសថ្មីៗរាប់មិនអស់។ ការបង្កើតគណនីគឺមិនគិតថ្លៃទេ!
+                    </p>
+                    <a href="pages/dashboard.html" class="btn btn-dark btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg btn-vibrate" style="background-color: #0f172a; font-size: 16px;">
+                        ចាប់ផ្តើមឥឡូវនេះ <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Public Footer Component -->
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- ភ្ជាប់ឯកសារ components.js ដើម្បីបញ្ចាំង Navbar និង Footer រួម -->
+    <script src="assets/js/components.js"></script>
+
+    <!-- ស្គ្រីបសម្រាប់ Typing Effect -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const text = "Smart Learn";
+            const typingElement = document.getElementById('typingEffect');
+            let index = 0;
+
+            function typeWriter() {
+                if (index < text.length) {
+                    typingElement.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 150); // ល្បឿនវាយអក្សរ (150ms ក្នុងមួយតួ)
+                }
+            }
+
+            // ចាប់ផ្តើមវាយអក្សរក្រោយពេលដែលទំព័រលោតចេញមកបាន ០.៨ វិនាទី
+            setTimeout(typeWriter, 800);
+
+            // មុខងាររាប់លេខស្ថិតិ (Counter Animation)
+            const counters = document.querySelectorAll('.stat-counter-home');
+            let hasAnimated = false;
+
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !hasAnimated) {
+                        hasAnimated = true;
+                        counters.forEach(counter => {
+                            const target = parseInt(counter.getAttribute('data-target'));
+                            const suffix = counter.getAttribute('data-suffix') || '';
+                            const duration = 2000; // រយៈពេល 2 វិនាទី
+                            const step = target / (duration / 16);
+                            let current = 0;
+
+                            const updateCounter = () => {
+                                current += step;
+                                if (current < target) {
+                                    counter.innerText = Math.ceil(current) + suffix;
+                                    requestAnimationFrame(updateCounter);
+                                } else {
+                                    counter.innerText = target + suffix;
+                                }
+                            };
+                            updateCounter();
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const statsSection = document.getElementById('statsSection');
+            if (statsSection) statsObserver.observe(statsSection);
+        });
+    </script>
+</body>
+</html>

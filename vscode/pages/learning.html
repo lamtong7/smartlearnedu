@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Learn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #eff6ff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #f1f5f9;
+            --sidebar-width: 250px;
+        }
+
+        body {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: #f8fafc;
+        }
+
+        /* Fixed Navigation Sidebar layout style configurations */
+        .dashboard-sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #ffffff;
+            border-right: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-brand {
+            font-weight: 800;
+            font-size: 22px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 12px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu-item {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-menu-link:hover,
+        .sidebar-menu-link.active {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sidebar-menu-link .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        /* Left Sidebar Promo Card Element */
+        .sidebar-promo-card {
+            background: linear-gradient(135deg, #ffffff, #edf2ff);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Fluid Dashboard Content Workspace wrapper area */
+        .dashboard-main-view {
+            margin-left: var(--sidebar-width);
+            padding-bottom: 60px;
+        }
+
+        .video-player-container {
+            background: #0f172a;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-nav-tabs {
+            border-bottom: 1px solid var(--border-color);
+            margin-top: 25px;
+            gap: 25px;
+        }
+
+        .custom-nav-tabs .nav-link {
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 5px;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            background: transparent;
+        }
+
+        .custom-nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .custom-nav-tabs .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .info-stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Content Right Playlist Navigation Drawer Container list elements item */
+        .course-content-panel {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .course-content-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .course-content-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .course-content-panel::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .course-content-panel::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .accordion-item {
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        .accordion-button {
+            background: #f8fafc !important;
+            color: var(--text-dark) !important;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 14px !important;
+            padding: 16px 20px;
+            box-shadow: none !important;
+            border: 1px solid var(--border-color);
+        }
+
+        .accordion-button:not(.collapsed) {
+            border-color: #cbd5e1;
+        }
+
+        /* Smooth Accordion Transition Customization */
+        .collapsing {
+            transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .accordion-button::after {
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .lesson-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-top: 4px;
+            color: var(--text-dark);
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .lesson-item:hover {
+            background: #f1f5f9;
+        }
+
+        .lesson-item.active {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .lesson-item.locked {
+            color: var(--text-muted);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Resource Box asset element component link details row file list style box map */
+        .resource-row-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: transparent;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+            font-size: 13px;
+            margin-top: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .resource-row-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.04);
+            border-color: var(--border-color);
+        }
+
+        body.dark-mode .course-content-panel {
+            background: var(--surface-color);
+            border-color: var(--border-color);
+        }
+
+        body.dark-mode .resource-row-box {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: var(--border-color);
+        }
+
+        body.dark-mode .resource-row-box:hover {
+            background: var(--surface-color);
+        }
+
+        /* Q&A Card Hover Effect */
+        .qa-card {
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .qa-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05) !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        body.dark-mode .qa-card {
+            background-color: var(--surface-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        body.dark-mode .qa-card:hover {
+            background-color: #334155 !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Discussion Card Hover Effect */
+        .discussion-card {
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .discussion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05) !important;
+            border-color: #cbd5e1 !important;
+        }
+
+        body.dark-mode .discussion-card {
+            background-color: var(--surface-color) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        body.dark-mode .discussion-card:hover {
+            background-color: #334155 !important;
+            border-color: var(--border-color) !important;
+        }
+
+        /* Added Missing Keyframe Transformations for Elements Base Rules */
+        .fade-in-scale {
+            animation: fadeInScaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInScaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+    <link href="../assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="public-navbar"></div>
+
+    <aside class="dashboard-sidebar" id="app-sidebar"></aside>
+
+    <div class="dashboard-main-view">
+        <div class="workspace-container">
+
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb small" style="font-size: 13px;">
+                    <li class="breadcrumb-item"><a href="myCourses.html" class="text-decoration-none text-muted">វគ្គសិក្សារបស់ខ្ញុំ</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted" id="learningCourseBread">វគ្គបណ្តុះបណ្តាលការអភិវឌ្ឍគេហទំព័រ</a></li>
+                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page" id="learningTitleBread">សេចក្តីផ្តើមនៃ HTML</li>
+                </ol>
+            </nav>
+
+            <div class="row g-4">
+
+                <div class="col-xl-8">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h3 fw-bold m-0" id="mainLessonTitle" style="font-weight: 800; font-size: 26px;">
+                            សេចក្តីផ្តើមនៃ HTML <button class="btn btn-link p-1 text-muted"><i class="bi bi-bookmark"></i></button></h1>
+                        <button id="markCompleteBtn" class="btn btn-outline-primary fw-semibold px-3 py-2 btn-sm" style="border-radius: 8px;">
+                            <i class="bi bi-check2-circle me-1"></i> <span id="markCompleteText">សម្គាល់ថាបានបញ្ចប់</span>
+                        </button>
+                    </div>
+
+                    <div class="video-player-container text-white">
+                        <img id="learningCourseImg" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1000" alt="Course Thumbnail" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="play-overlay" id="playOverlay">
+                            <i class="bi bi-play-circle-fill"></i>
+                        </div>
+                        <iframe id="youtubePlayer" class="d-none" width="100%" height="100%" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 16px;"></iframe>
+                    </div>
+
+                    <nav class="nav custom-nav-tabs" role="tablist">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">ទិដ្ឋភាពទូទៅ</button>
+                        <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab" aria-controls="notes" aria-selected="false">កំណត់ចំណាំ</button>
+                        <button class="nav-link" id="qa-tab" data-bs-toggle="tab" data-bs-target="#qa" type="button" role="tab" aria-controls="qa" aria-selected="false">សំណួរ និងចម្លើយ <span class="badge bg-primary bg-opacity-10 text-primary">12</span></button>
+                        <button class="nav-link" id="discussion-tab" data-bs-toggle="tab" data-bs-target="#discussion" type="button" role="tab" aria-controls="discussion" aria-selected="false">ការពិភាក្សា <span class="badge bg-primary bg-opacity-10 text-primary">5</span></button>
+                    </nav>
+
+                    <div class="tab-content py-4 fade-in-scale" id="lessonTabContent" style="animation-delay: 0.3s;">
+
+                        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                            <h4 class="fw-bold fs-5 mb-3">អំពីមេរៀននេះ</h4>
+                            <p class="text-muted lh-base mb-4" style="font-size: 15px;">នៅក្នុងមេរៀននេះ យើងនឹងរៀនពីអ្វីទៅជា HTML ហេតុអ្វីបានជាវាត្រូវបានប្រើ និងរបៀបបង្កើតឯកសារ HTML ដំបូងរបស់អ្នក។ HTML គឺជាភាសា markup ស្តង់ដារសម្រាប់ការបង្កើតគេហទំព័រ និងកម្មវិធីអ៊ីនធឺណិត។</p>
+
+                            <div class="row g-3">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="info-stat-card">
+                                        <div class="info-stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-clock"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size: 11px;">រយៈពេល</small>
+                                            <span class="fw-bold small" id="lessonDurationText">18:30 នាទី</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="info-stat-card">
+                                        <div class="info-stat-icon bg-purple bg-opacity-10 text-purple" style="color: #7c3aed; background: #f5f3ff;"><i class="bi bi-play-btn"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size: 11px;">មេរៀន</small>
+                                            <span class="fw-bold small">1 នៃ 45</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="info-stat-card">
+                                        <div class="info-stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-bar-chart-line"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size: 11px;">វឌ្ឍនភាព</small>
+                                            <span class="fw-bold small">22%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="info-stat-card">
+                                        <div class="info-stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-star"></i></div>
+                                        <div>
+                                            <small class="text-muted d-block" style="font-size: 11px;">ពិន្ទុ</small>
+                                            <span class="fw-bold small text-success">+50 XP</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+                            <h4 class="fw-bold fs-5 mb-3">កំណត់ចំណាំរបស់អ្នក</h4>
+                            <p class="text-muted small">អ្នកមិនទាន់មានកំណត់ចំណាំសម្រាប់មេរៀននេះនៅឡើយទេ។</p>
+                            <textarea class="form-control mb-3 bg-light border-light-subtle" rows="4" placeholder="វាយបញ្ចូលកំណត់ចំណាំរបស់អ្នកនៅទីនេះ..." style="font-size: 13px; border-radius: 8px; resize: none;"></textarea>
+                            <button class="btn btn-primary btn-sm px-4 py-2 fw-semibold" style="border-radius: 8px;">រក្សាទុកកំណត់ចំណាំ</button>
+                        </div>
+
+                        <div class="tab-pane fade" id="qa" role="tabpanel" aria-labelledby="qa-tab">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="fw-bold fs-5 m-0">សំណួរ និងចម្លើយ</h4>
+                                <button class="btn btn-outline-primary btn-sm fw-semibold" style="border-radius: 6px;">សួរសំណួរ</button>
+                            </div>
+                            <div class="qa-card border border-light-subtle rounded-3 p-3 mb-3 bg-white shadow-sm">
+                                <div class="d-flex gap-3">
+                                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50" class="rounded-circle" style="width: 40px; height: 40px;" alt="">
+                                    <div>
+                                        <h6 class="fw-bold mb-1 fs-6">តើ HTML និង HTML5 ខុសគ្នាដូចម្តេច?</h6>
+                                        <p class="text-muted small mb-2">តើមានអ្នកណាអាចពន្យល់ពីភាពខុសគ្នាសំខាន់ៗបានទេ? ខ្ញុំមានភាពច្របូកច្របល់បន្តិចអំពីពេលណាត្រូវប្រើមួយណា។</p>
+                                        <div class="text-muted" style="font-size: 11px;">សួរដោយ John Doe • 2 ថ្ងៃមុន</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="discussion" role="tabpanel" aria-labelledby="discussion-tab">
+                            <h4 class="fw-bold fs-5 mb-3">ការពិភាក្សាលើមេរៀន</h4>
+                            <p class="text-muted small">ចូលរួមការសន្ទនាជាមួយសិស្សផ្សេងទៀតដែលកំពុងរៀនវគ្គនេះ发育。</p>
+
+                            <div class="d-flex gap-3 mb-4 pb-4 border-bottom">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50" id="currentUserImg" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" alt="">
+                                <div class="flex-grow-1">
+                                    <textarea id="commentInput" class="form-control bg-light border-light-subtle mb-2" rows="2" placeholder="សរសេរមតិ ឬការពិភាក្សារបស់អ្នកនៅទីនេះ..." style="font-size: 13px; border-radius: 8px; resize: none;"></textarea>
+                                    <div class="text-end"><button id="postCommentBtn" class="btn btn-primary btn-sm px-4 fw-semibold" style="border-radius: 6px;">បង្ហោះមតិ</button></div>
+                                </div>
+                            </div>
+
+                            <div id="commentList" class="d-flex flex-column gap-4">
+                                <div class="d-flex gap-3 w-100">
+                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" alt="">
+                                    <div class="w-100">
+                                        <div class="discussion-card bg-light p-3 rounded-3 border border-light-subtle">
+                                            <h6 class="fw-bold mb-1 fs-6">Sarah Johnson</h6>
+                                            <p class="text-muted small mb-0">មេរៀននេះមានប្រយោជន៍ខ្លាំងណាស់លោកគ្រូ អរគុណច្រើន!</p>
+                                        </div>
+                                        <div class="d-flex gap-3 mt-1 ms-2 small text-muted" style="font-size: 11px;">
+                                            <span class="text-primary fw-semibold reply-action-btn" style="cursor: pointer;">ឆ្លើយតប</span>
+                                            <span>2 ម៉ោងមុន</span>
+                                        </div>
+                                        <div class="reply-input-wrapper mt-2 d-none">
+                                            <div class="d-flex gap-2">
+                                                <textarea class="form-control bg-white border-light-subtle reply-textarea" rows="1" placeholder="សរសេរការឆ្លើយតប..." style="font-size: 12px; border-radius: 8px; resize: none;"></textarea>
+                                                <div class="d-flex flex-column gap-1">
+                                                    <button class="btn btn-primary btn-sm px-3 submit-reply-btn" style="border-radius: 6px; font-size: 11px;">បញ្ជូន</button>
+                                                    <button class="btn btn-light btn-sm px-3 border cancel-reply-btn" style="border-radius: 6px; font-size: 11px;">បោះបង់</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="replies-container ms-4 mt-2 d-flex flex-column gap-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center border-top mt-3 pt-4 mb-4 fade-in-scale" style="animation-delay: 0.4s;">
+                        <button class="btn btn-outline-secondary fw-bold px-4 py-3" style="border-radius: 12px; border-width: 2px;"><i class="bi bi-arrow-left me-2"></i> មេរៀនមុន</button>
+                        <button class="btn btn-primary fw-bold px-4 py-3" style="background-color: var(--primary-color); border-radius: 12px;">មេរៀនបន្ទាប់ <i class="bi bi-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 fade-in-scale" style="animation-delay: 0.5s;">
+                    <div class="course-content-panel shadow-sm">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="fw-bold m-0" style="font-size: 16px;">ខ្លឹមសារវគ្គសិក្សា</h3>
+                            <span class="text-muted small fw-medium">45 មេរៀន</span>
+                        </div>
+
+                        <div class="accordion" id="syllabusAccordion"></div>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="fw-bold m-0" style="font-size: 14px;">ធនធាន</h4>
+                                <a href="#" class="text-primary small text-decoration-none fw-semibold">មើលទាំងអស់</a>
+                            </div>
+
+                            <div class="resource-row-box">
+                                <span class="d-flex align-items-center gap-2 fw-medium text-dark"><i class="bi bi-file-earmark-pdf-fill text-danger fs-5"></i> HTML Cheat Sheet.pdf</span>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="text-muted" style="font-size: 11px;">1.2 MB</span>
+                                    <a href="#" class="text-dark"><i class="bi bi-download"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="resource-row-box">
+                                <span class="d-flex align-items-center gap-2 fw-medium text-dark"><i class="bi bi-file-earmark-zip-fill text-primary fs-5"></i> HTML Examples.zip</span>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="text-muted" style="font-size: 11px;">2.4 MB</span>
+                                    <a href="#" class="text-dark"><i class="bi bi-download"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="fw-bold m-0" style="font-size: 14px;">កំណត់ចំណាំរបស់អ្នក</h4>
+                                <a href="#" class="text-primary small text-decoration-none fw-semibold">បន្ថែមចំណាំ</a>
+                            </div>
+                            <textarea class="form-control border-light-subtle bg-light small" rows="3" placeholder="សរសេរកំណត់ចំណាំរបស់អ្នកសម្រាប់មេរៀននេះ..." style="font-size: 13px; border-radius: 8px; resize: none;"></textarea>
+                            <small class="text-muted mt-1 d-block" style="font-size: 11px;"><i class="bi bi-cloud-check-fill text-success"></i> កំណត់ចំណាំរបស់អ្នកត្រូវបានរក្សាទុកដោយស្វ័យប្រវត្តិ</small>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div id="public-footer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/sidebar.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let syllabusData = [];
+
+            const accordionContainer = document.getElementById("syllabusAccordion");
+            const mainLessonTitle = document.getElementById("mainLessonTitle");
+            const learningTitleBread = document.getElementById("learningTitleBread");
+            const lessonDurationText = document.getElementById("lessonDurationText");
+            const youtubePlayer = document.getElementById("youtubePlayer");
+            const playOverlay = document.getElementById('playOverlay');
+            const learningCourseImg = document.getElementById('learningCourseImg');
+
+            function renderSyllabus() {
+                if (!accordionContainer) return;
+
+                accordionContainer.innerHTML = syllabusData.map(section => {
+                    const isExpanded = section.expanded ? "show" : "";
+                    const isCollapsed = section.expanded ? "" : "collapsed";
+
+                    const lessonsHtml = section.lessons.map(lesson => {
+                        let iconHtml = '';
+                        let activeClass = '';
+                        let lockedClass = '';
+
+                        if (lesson.status === 'active') {
+                            iconHtml = '<i class="bi bi-play-circle-fill text-primary"></i>';
+                            activeClass = 'active';
+                        } else if (lesson.status === 'completed') {
+                            iconHtml = '<i class="bi bi-check-circle-fill text-success"></i>';
+                        } else if (lesson.status === 'locked') {
+                            iconHtml = '<i class="bi bi-lock-fill text-muted"></i>';
+                            lockedClass = 'locked';
+                        }
+                        const videoId = lesson.videoId || 'pQN-pnXPaVg';
+
+                        return `
+                            <a href="#" class="lesson-item ${activeClass} ${lockedClass}" data-id="${lesson.id}" data-title="${lesson.title}" data-duration="${lesson.duration}" data-status="${lesson.status}" data-video-id="${videoId}">
+                                <span class="d-flex align-items-center gap-2">${iconHtml} ${lesson.num}. ${lesson.title}</span>
+                                <span class="text-muted">${lesson.duration}</span>
+                            </a>
+                        `;
+                    }).join('');
+
+                    return `
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button ${isCollapsed}" type="button" data-bs-toggle="collapse" data-bs-target="#${section.id}">
+                                    <div class="w-100 text-start">
+                                        <div class="fw-bold text-dark mb-1">${section.title}</div>
+                                        <small class="text-muted fw-normal" style="font-size: 11px;">${section.progress}</small>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="${section.id}" class="accordion-collapse collapse ${isExpanded}" data-bs-parent="#syllabusAccordion">
+                                <div class="accordion-body p-1">
+                                    <div class="lesson-list">
+                                        ${lessonsHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const lessonItems = accordionContainer.querySelectorAll('.lesson-item');
+                lessonItems.forEach(item => {
+                    item.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        const status = this.getAttribute('data-status');
+                        if (status === 'locked') return;
+
+                        const currentActive = accordionContainer.querySelector('.lesson-item.active');
+                        if (currentActive) {
+                            currentActive.classList.remove('active');
+                            const oldIcon = currentActive.querySelector('i');
+                            if (oldIcon && oldIcon.classList.contains('bi-play-circle-fill')) {
+                                oldIcon.className = 'bi bi-check-circle-fill text-success';
+                            }
+                        }
+
+                        this.classList.add('active');
+                        const iconEl = this.querySelector('i');
+                        if (iconEl) iconEl.className = 'bi bi-play-circle-fill text-primary';
+
+                        const title = this.getAttribute('data-title');
+                        const duration = this.getAttribute('data-duration');
+                        const videoId = this.getAttribute('data-video-id');
+
+                        if (mainLessonTitle) mainLessonTitle.innerHTML = `${title} <button class="btn btn-link p-1 text-muted"><i class="bi bi-bookmark"></i></button>`;
+                        if (learningTitleBread) learningTitleBread.textContent = title;
+                        if (lessonDurationText) lessonDurationText.textContent = `${duration} នាទី`;
+                        
+                        // Clean video element swap tracking manipulation
+                        if (youtubePlayer && videoId) {
+                            youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                            youtubePlayer.classList.remove('d-none');
+                            if (playOverlay) playOverlay.classList.add('d-none');
+                            if (learningCourseImg) learningCourseImg.classList.add('d-none');
+                        }
+                    });
+                });
+
+                setTimeout(() => {
+                    const activeLesson = accordionContainer.querySelector('.lesson-item.active');
+                    const panel = document.querySelector('.course-content-panel');
+
+                    if (activeLesson && panel) {
+                        const panelRect = panel.getBoundingClientRect();
+                        const lessonRect = activeLesson.getBoundingClientRect();
+
+                        panel.scrollBy({
+                            top: lessonRect.top - panelRect.top - (panel.clientHeight / 2) + (lessonRect.height / 2),
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 500);
+            }
+
+            const markCompleteBtn = document.getElementById('markCompleteBtn');
+            const markCompleteText = document.getElementById('markCompleteText');
+
+            if (markCompleteBtn && markCompleteText) {
+                const icon = markCompleteBtn.querySelector('i');
+
+                markCompleteBtn.addEventListener('click', function () {
+                    this.classList.toggle('completed');
+
+                    if (this.classList.contains('completed')) {
+                        this.classList.replace('btn-outline-primary', 'btn-success');
+                        this.classList.remove('btn-pulse-white');
+                        if (icon) icon.className = 'bi bi-check-circle-fill me-1';
+                        markCompleteText.textContent = 'បានបញ្ចប់';
+
+                        if (typeof confetti === 'function') {
+                            confetti({
+                                particleCount: 150,
+                                spread: 80,
+                                origin: { y: 0.6 },
+                                zIndex: 1060,
+                                colors: ['#2563eb', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6']
+                            });
+                        }
+                    } else {
+                        this.classList.replace('btn-success', 'btn-outline-primary');
+                        if (icon) icon.className = 'bi bi-check2-circle me-1';
+                        markCompleteText.textContent = 'សម្គាល់ថាបានបញ្ចប់';
+                    }
+                });
+            }
+
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const targetWidth = bar.style.width || '22%';
+                bar.style.width = '0%';
+                bar.style.transition = 'width 1.2s ease-in-out';
+                setTimeout(() => { bar.style.width = targetWidth; }, 150);
+            });
+
+            const postCommentBtn = document.getElementById('postCommentBtn');
+            const commentInput = document.getElementById('commentInput');
+            const commentList = document.getElementById('commentList');
+            const currentUserImg = document.getElementById('currentUserImg');
+
+            const savedFirstName = localStorage.getItem('profile_firstName') || 'John';
+            const savedLastName = localStorage.getItem('profile_lastName') || 'Doe';
+            const savedImage = localStorage.getItem('profile_image') || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
+
+            if (currentUserImg) currentUserImg.src = savedImage;
+
+            if (postCommentBtn && commentInput && commentList) {
+                postCommentBtn.addEventListener('click', function () {
+                    const text = commentInput.value.trim();
+                    if (text === '') return;
+
+                    const newComment = document.createElement('div');
+                    newComment.className = 'd-flex gap-3 w-100';
+                    newComment.innerHTML = `
+                        <img src="${savedImage}" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;" alt="">
+                        <div class="w-100">
+                            <div class="discussion-card bg-light p-3 rounded-3 border border-light-subtle">
+                                <h6 class="fw-bold mb-1 fs-6">${savedFirstName} ${savedLastName}</h6>
+                                <p class="text-muted small mb-0">${text}</p>
+                            </div>
+                            <div class="d-flex gap-3 mt-1 ms-2 small text-muted" style="font-size: 11px;">
+                                <span class="text-primary fw-semibold reply-action-btn" style="cursor: pointer;">ឆ្លើយតប</span>
+                                <span>ទើបតែបញ្ចេញមតិ</span>
+                            </div>
+                            <div class="reply-input-wrapper mt-2 d-none">
+                                <div class="d-flex gap-2">
+                                    <textarea class="form-control bg-white border-light-subtle reply-textarea" rows="1" placeholder="សរសេរការឆ្លើយតប..." style="font-size: 12px; border-radius: 8px; resize: none;"></textarea>
+                                    <div class="d-flex flex-column gap-1">
+                                        <button class="btn btn-primary btn-sm px-3 submit-reply-btn" style="border-radius: 6px; font-size: 11px;">បញ្ជូន</button>
+                                        <button class="btn btn-light btn-sm px-3 border cancel-reply-btn" style="border-radius: 6px; font-size: 11px;">បោះបង់</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="replies-container ms-4 mt-2 d-flex flex-column gap-2"></div>
+                        </div>
+                    `;
+
+                    commentList.prepend(newComment);
+                    commentInput.value = '';
+                });
+
+                commentList.addEventListener('click', function (e) {
+                    if (e.target.classList.contains('reply-action-btn')) {
+                        const commentBody = e.target.closest('.w-100');
+                        const replyWrapper = commentBody.querySelector('.reply-input-wrapper');
+
+                        document.querySelectorAll('.reply-input-wrapper').forEach(el => {
+                            if (el !== replyWrapper) el.classList.add('d-none');
+                        });
+
+                        replyWrapper.classList.toggle('d-none');
+                        if (!replyWrapper.classList.contains('d-none')) {
+                            replyWrapper.querySelector('.reply-textarea').focus();
+                        }
+                    }
+
+                    if (e.target.classList.contains('cancel-reply-btn')) {
+                        const replyWrapper = e.target.closest('.reply-input-wrapper');
+                        replyWrapper.classList.add('d-none');
+                        replyWrapper.querySelector('.reply-textarea').value = '';
+                    }
+
+                    if (e.target.classList.contains('submit-reply-btn')) {
+                        const commentBody = e.target.closest('.w-100');
+                        const replyInput = commentBody.querySelector('.reply-textarea');
+                        const replyText = replyInput.value.trim();
+
+                        if (replyText !== '') {
+                            const repliesContainer = commentBody.querySelector('.replies-container');
+                            const newReply = document.createElement('div');
+                            newReply.className = 'd-flex gap-2 mt-2';
+                            newReply.innerHTML = `
+                                <img src="${savedImage}" class="rounded-circle shadow-sm" style="width: 32px; height: 32px; object-fit: cover;" alt="">
+                                <div class="w-100">
+                                    <div class="discussion-card bg-light p-2 rounded-3 border border-light-subtle">
+                                        <h6 class="fw-bold mb-1" style="font-size: 13px;">${savedFirstName} ${savedLastName}</h6>
+                                        <p class="text-muted small mb-0" style="font-size: 12px;">${replyText}</p>
+                                    </div>
+                                    <div class="text-muted ms-2 mt-1" style="font-size: 10px;">ទើបតែឆ្លើយតប</div>
+                                </div>
+                            `;
+                            repliesContainer.appendChild(newReply);
+                            replyInput.value = '';
+                            commentBody.querySelector('.reply-input-wrapper').classList.add('d-none');
+                        }
+                    }
+                });
+            }
+
+            // មុខងារចុចលើរូបភាពដើម្បីចាក់វីដេអូដំបូង
+            if (playOverlay) {
+                playOverlay.addEventListener('click', function() {
+                    this.classList.add('d-none');
+                    if (learningCourseImg) learningCourseImg.classList.add('d-none');
+                    if (youtubePlayer) {
+                        youtubePlayer.classList.remove('d-none');
+                        let currentSrc = youtubePlayer.getAttribute('src');
+                        if (!currentSrc || currentSrc === '') {
+                            const activeLesson = accordionContainer.querySelector('.lesson-item.active');
+                            const videoId = activeLesson ? activeLesson.getAttribute('data-video-id') : 'pQN-pnXPaVg';
+                            currentSrc = `https://www.youtube.com/embed/${videoId}`;
+                        }
+                        if (!currentSrc.includes('autoplay=1')) {
+                            currentSrc += (currentSrc.includes('?') ? '&' : '?') + 'autoplay=1';
+                        }
+                        youtubePlayer.src = currentSrc;
+                    }
+                });
+            }
+
+            async function initializePage() {
+                try {
+                    // ១. ទាញយក ID ពី URL និងបង្ហាញរូបភាពវគ្គសិក្សា
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const courseId = parseInt(urlParams.get('id'));
+                    if (courseId) {
+                        const coursesDB = JSON.parse(localStorage.getItem('admin_courses_db') || '[]');
+                        const currentCourse = coursesDB.find(c => c.id === courseId);
+                        if (currentCourse) {
+                            const courseBread = document.getElementById('learningCourseBread');
+                            if (courseBread) {
+                                courseBread.textContent = currentCourse.title;
+                                courseBread.href = `course-detail.html?id=${currentCourse.id}`;
+                            }
+                            if (learningCourseImg) learningCourseImg.src = currentCourse.courseImg;
+                        }
+                    }
+
+                    const localSyllabus = localStorage.getItem('learning_syllabus_db');
+                    if (localSyllabus) {
+                        syllabusData = JSON.parse(localSyllabus);
+                    } else {
+                        // Secure structured execution fallback template structure
+                        syllabusData = [
+                            {
+                                id: "sec1",
+                                title: "ክፍል ១៖ សេចក្តីផ្តើម និងគ្រឹះស្ថានជាមូលដ្ឋាន",
+                                progress: "មេរៀនទី ១ នៃ ៣",
+                                expanded: true,
+                                lessons: [
+                                    { id: 101, num: "01", title: "សេចក្តីផ្តើមនៃ HTML", duration: "18:30", status: "active", videoId: "pQN-pnXPaVg" },
+                                    { id: 102, num: "02", title: "ការតំឡើងកម្មវិធីនិពន្ធកូដ VS Code", duration: "12:15", status: "completed", videoId: "hQAHLR7v8S4" },
+                                    { id: 103, num: "03", title: "រចនាសម្ព័ន្ធ Elements និង Tags របស់ HTML", duration: "24:40", status: "locked", videoId: "D-h8L5pkp44" }
+                                ]
+                            }
+                        ];
+                    }
+                    renderSyllabus();
+                } catch (error) {
+                    console.error('Failed to load syllabus data:', error);
+                }
+            }
+            initializePage();
+        });
+    </script>
+</body>
+
+</html>
