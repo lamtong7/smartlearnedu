@@ -1,1 +1,1 @@
-# smart-learn-khmer
+# smartlearnkh
