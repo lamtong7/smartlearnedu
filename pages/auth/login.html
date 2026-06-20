@@ -58,28 +58,26 @@
         }
         .typing-cursor {
             animation: blink-cursor 1s step-end infinite;
-            color: var(--primary-color);
+            color: #216477;
         }
         
-        /* បន្ថែមចលនាសម្រាប់ Password Strength */
         .password-strength-meter { transition: all 0.3s ease; }
         .strength-bar { transition: all 0.3s ease; }
     </style>
 </head>
 <body>
-    <!-- ប៊ូតុងប្តូរ Dark/Light Mode -->
     <button class="btn btn-light position-fixed top-0 end-0 m-4 shadow-sm border border-light-subtle" id="authThemeToggle" style="border-radius: 50%; width: 45px; height: 45px; z-index: 1000;">
         <i class="bi bi-moon-stars-fill"></i>
     </button>
 
     <div class="auth-card">
         <div class="text-center">
-            <a href="../../index.html" class="brand-logo"><i class="bi bi-mortarboard-fill text-primary"></i> Smart Learn</a>
+            <a href="../../index.html" class="brand-logo text-decoration-none fw-bold" style="color: #216477;"><i class="bi bi-mortarboard-fill text-primary"></i> Smart Learn</a>
             <h4 class="fw-bold mb-1"><span id="typingEffectLogin"></span><span class="typing-cursor">|</span></h4>
             <p class="text-muted small mb-4" data-i18n="login_desc">សូមបញ្ចូលព័ត៌មានលម្អិតរបស់អ្នកដើម្បីចូលគណនី។</p>
         </div>
 
-        <form id="loginForm">
+        <form id="loginForm" novalidate>
             <div class="mb-3">
                 <label class="form-label small fw-semibold" data-i18n="email_label">អាសយដ្ឋានអ៊ីមែល</label>
                 <input type="email" id="loginEmail" class="form-control" placeholder="បញ្ចូលអ៊ីមែលរបស់អ្នក" data-i18n="email_ph" required>
@@ -89,13 +87,12 @@
                     <label class="form-label small fw-semibold m-0" data-i18n="pwd_label">ពាក្យសម្ងាត់</label>
                     <a href="forgot-password.html" class="text-primary text-decoration-none small fw-semibold" data-i18n="forgot_pwd">ភ្លេចពាក្យសម្ងាត់?</a>
                 </div>
-                <div class="position-relative">
+                <div class="position-relative d-flex align-items-center">
                     <input type="password" class="form-control pe-5" id="loginPassword" placeholder="បញ្ចូលពាក្យសម្ងាត់របស់អ្នក" data-i18n="pwd_ph" required>
-                    <button type="button" class="btn btn-link text-muted position-absolute end-0 top-50 translate-middle-y text-decoration-none p-0 pe-3" id="togglePassword">
+                    <span class="position-absolute end-0 me-3 text-muted toggle-password" id="togglePassword" style="cursor: pointer; z-index: 10;">
                         <i class="bi bi-eye-slash"></i>
-                    </button>
+                    </span>
                 </div>
-                <!-- Password Strength Meter -->
                 <div class="password-strength-meter mt-2 d-none" id="passwordStrengthContainer">
                     <div class="d-flex gap-1 mb-1">
                         <div class="strength-bar flex-grow-1 bg-light rounded-pill" style="height: 4px;" id="bar1"></div>
@@ -168,7 +165,6 @@
                     }
                 });
                 
-                // ធ្វើបច្ចុប្បន្នភាពអក្សរវាយដោយស្វ័យប្រវត្តិ (Typing effect)
                 const textLogin = t['login_title'];
                 const typingElementLogin = document.getElementById('typingEffectLogin');
                 if (window.loginTypingTimeout) clearTimeout(window.loginTypingTimeout);
@@ -203,16 +199,17 @@
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('loginPassword');
             
+            // 🔥 កែសម្រួលមុខងារចុចរូបភ្នែកបិទ/បើកឱ្យដំណើរការបានត្រឹមត្រូវ
             if (togglePassword && passwordInput) {
                 togglePassword.addEventListener('click', function() {
-                    // ត្រួតពិនិត្យ និងប្តូរប្រភេទ input (password <-> text)
-                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                    passwordInput.setAttribute('type', type);
-                    
-                    // ប្តូររូបតំណាងភ្នែក
                     const icon = this.querySelector('i');
-                    icon.classList.toggle('bi-eye');
-                    icon.classList.toggle('bi-eye-slash');
+                    if (passwordInput.getAttribute('type') === 'password') {
+                        passwordInput.setAttribute('type', 'text');
+                        icon.className = 'bi bi-eye';
+                    } else {
+                        passwordInput.setAttribute('type', 'password');
+                        icon.className = 'bi bi-eye-slash';
+                    }
                 });
             }
             
@@ -243,18 +240,18 @@
                     bars.forEach(bar => bar.className = 'strength-bar flex-grow-1 bg-light rounded-pill');
 
                     if (strength <= 1) {
-                        bars[0].classList.replace('bg-light', 'bg-danger');
-                        if (strength === 1) bars[1].classList.replace('bg-light', 'bg-danger');
+                        bars[0].className = 'strength-bar flex-grow-1 bg-danger rounded-pill';
+                        if (strength === 1) bars[1].className = 'strength-bar flex-grow-1 bg-danger rounded-pill';
                         strengthText.textContent = t['pwd_weak'];
                         strengthText.className = 'small fw-semibold text-danger';
                     } else if (strength === 2 || strength === 3) {
-                        bars[0].classList.replace('bg-light', 'bg-warning');
-                        bars[1].classList.replace('bg-light', 'bg-warning');
-                        bars[2].classList.replace('bg-light', 'bg-warning');
+                        bars[0].className = 'strength-bar flex-grow-1 bg-warning rounded-pill';
+                        bars[1].className = 'strength-bar flex-grow-1 bg-warning rounded-pill';
+                        bars[2].className = 'strength-bar flex-grow-1 bg-warning rounded-pill';
                         strengthText.textContent = t['pwd_medium'];
                         strengthText.className = 'small fw-semibold text-warning';
                     } else if (strength >= 4) {
-                        bars.forEach(bar => bar.classList.replace('bg-light', 'bg-success'));
+                        bars.forEach(bar => bar.className = 'strength-bar flex-grow-1 bg-success rounded-pill');
                         strengthText.textContent = t['pwd_strong'];
                         strengthText.className = 'small fw-semibold text-success';
                     }
@@ -273,8 +270,6 @@
             if (rememberedEmail && loginEmail && rememberMeCheckbox) {
                 loginEmail.value = rememberedEmail;
                 rememberMeCheckbox.checked = true;
-                
-                // Auto-focus the password field for better UX since the email is already filled
                 if (passwordInput) {
                     passwordInput.focus();
                 }
@@ -282,18 +277,16 @@
 
             if (loginForm) {
                 loginForm.addEventListener('submit', function(e) {
-                    e.preventDefault(); // ទប់ស្កាត់ការបញ្ជូន form ធម្មតា
+                    e.preventDefault();
                     
                     const email = loginEmail.value.trim();
                     const password = passwordInput.value;
                     
-                    // កំណត់ពាក្យបង្ហាញតាមលក្ខខណ្ឌ Redirect
                     const redirectUrlTarget = sessionStorage.getItem('redirectUrl');
                     const lang = localStorage.getItem('language') || 'km';
                     const t = pageTranslations[lang] || pageTranslations['km'];
                     const loadingText = redirectUrlTarget ? t['return_home'] : t['login_loading'];
 
-                    // បង្ហាញ Loading
                     const originalText = loginBtn.innerHTML;
                     loginBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${loadingText}`;
                     loginBtn.disabled = true;
@@ -304,11 +297,7 @@
                         loginBtn.disabled = false;
                         
                         const users = JSON.parse(localStorage.getItem('smartlearn_users') || '[]');
-                        
-                        // Encrypt the entered password to compare with the stored hash
                         const hashedInputPassword = CryptoJS.SHA256(password).toString();
-                        
-                        // Check if the credentials match any user in the array
                         const foundUser = users.find(u => u.email === email && u.password === hashedInputPassword);
                         
                         if (foundUser) {
@@ -325,7 +314,7 @@
                             }
                             
                             const redirectUrl = sessionStorage.getItem('redirectUrl') || '../dashboard.html';
-                            sessionStorage.removeItem('redirectUrl'); // លុបវាចេញវិញក្រោយប្រើយកមកប្រើរួច
+                            sessionStorage.removeItem('redirectUrl');
                             window.location.href = redirectUrl;
                         } else {
                             if (loginError) {
@@ -342,18 +331,14 @@
             if (googleLoginBtn) {
                 googleLoginBtn.addEventListener('click', async function() {
                     try {
-                        const originalText = this.innerHTML;
-                        
                         const redirectUrlTarget = sessionStorage.getItem('redirectUrl');
                         const loadingText = redirectUrlTarget ? 'កំពុងត្រឡប់ទៅទំព័រដើមវិញ...' : 'កំពុងភ្ជាប់...';
                         this.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${loadingText}`;
                         this.disabled = true;
 
-                        // Import Firebase SDKs
                         const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js');
                         const { getAuth, signInWithPopup, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js');
 
-                        // ⚠️ ចំណាំ៖ ជំនួស firebaseConfig នេះជាមួយកូដដែលបងទទួលបានពី Firebase Console
                         const firebaseConfig = {
                             apiKey: "YOUR_API_KEY",
                             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -364,11 +349,9 @@
                         const auth = getAuth(app);
                         const provider = new GoogleAuthProvider();
 
-                        // បង្ហាញផ្ទាំង Google Login ឲ្យសិស្សជ្រើសរើសគណនី
                         const result = await signInWithPopup(auth, provider);
                         const user = result.user;
 
-                        // រក្សាទុកទិន្នន័យចូល LocalStorage ឲ្យត្រូវនឹងទម្រង់ System យើង
                         const names = user.displayName ? user.displayName.split(' ') : ['Google', 'User'];
                         localStorage.setItem('profile_firstName', names[0]);
                         localStorage.setItem('profile_lastName', names.slice(1).join(' ') || '');
@@ -388,7 +371,6 @@
                     }
                 });
             }
-
         });
     </script>
 </body>
