@@ -1,16 +1,39 @@
+/* CSS Variables គាំទ្រទាំង Light និង Dark Mode */
 :root {
     --primary-color: #2563eb;
     --primary-light: #eff6ff;
+    --bg-dashboard: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #ffffff;
+    --bg-unread: #eff6ff;
+    --bg-unread-hover: #e0f2fe;
     --text-dark: #0f172a;
     --text-muted: #64748b;
     --border-color: #f1f5f9;
+    --border-hover: #cbd5e1;
     --sidebar-width: 250px;
+}
+
+/* បើប្រព័ន្ធរបស់អ្នកប្រើ class "dark" ឬ "dark-mode" នៅលើ <body> ឬ <html> */
+[data-theme="dark"],
+.dark,
+.dark-mode {
+    --bg-dashboard: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-hover: #334155;
+    --bg-unread: rgba(37, 99, 235, 0.15);
+    --bg-unread-hover: rgba(37, 99, 235, 0.25);
+    --text-dark: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --border-hover: #475569;
 }
 
 body {
     font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
     color: var(--text-dark);
-    background-color: #f8fafc;
+    background-color: var(--bg-dashboard);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Fixed Navigation Sidebar */
@@ -20,7 +43,7 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     border-right: 1px solid var(--border-color);
     z-index: 100;
     padding: 24px 16px;
@@ -39,16 +62,6 @@ body {
     gap: 8px;
     padding-left: 12px;
     margin-bottom: 30px;
-}
-
-.sidebar-menu-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-menu-item {
-    margin-bottom: 5px;
 }
 
 .sidebar-menu-link {
@@ -71,44 +84,10 @@ body {
     font-weight: 600;
 }
 
-.sidebar-menu-link .badge {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 20px;
-}
-
 /* Main Content Area */
 .dashboard-main-view {
     margin-left: var(--sidebar-width);
     padding-bottom: 60px;
-}
-
-/* Top Navigation Header */
-.top-dash-navbar {
-    background-color: #ffffff;
-    border-bottom: 1px solid var(--border-color);
-    padding: 14px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.top-search-bar {
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 6px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 320px;
-}
-
-.top-search-bar input {
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    width: 100%;
 }
 
 /* Workspace Container */
@@ -122,47 +101,52 @@ body {
 .notification-date-label {
     font-size: 14px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-muted);
     margin-top: 24px;
-    margin-bottom: 16px;
-    display: block;
+    margin-bottom: 12px;
+}
+
+.notification-card-wrapper {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.notification-card-wrapper:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-hover);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+/* ស្ទីលនៅពេលមិនទាន់អាន (Unread) */
+.notification-card-wrapper.unread-wrapper {
+    background-color: var(--bg-unread);
+    border-left: 4px solid var(--primary-color);
+    border-color: var(--border-hover);
+}
+
+.notification-card-wrapper.unread-wrapper:hover {
+    background-color: var(--bg-unread-hover);
 }
 
 .notification-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
     padding: 20px;
-    margin-bottom: 12px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 16px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    position: relative;
     text-decoration: none;
-    color: var(--text-dark);
-}
-
-.notification-card:hover {
-    transform: translateY(-2px);
-    background: #ffffff;
-    border-color: #cbd5e1;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-    color: var(--text-dark);
-}
-
-.notification-card.unread {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.notification-card.unread:hover {
-    background: #e0f2fe;
+    color: var(--text-dark) !important;
+    flex-grow: 1;
+    background: transparent;
 }
 
 .notification-icon {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -171,8 +155,9 @@ body {
     flex-shrink: 0;
 }
 
+/* ពណ៌ Icon រក្សាភាពច្បាស់ទាំង Light / Dark */
 .icon-primary {
-    background: var(--primary-color);
+    background: #2563eb;
     color: white;
 }
 
@@ -191,8 +176,13 @@ body {
     color: white;
 }
 
-.icon-purple {
-    background: #8b5cf6;
+.icon-info {
+    background: #06b6d4;
+    color: white;
+}
+
+.icon-secondary {
+    background: #64748b;
     color: white;
 }
 
@@ -207,15 +197,14 @@ body {
     color: var(--text-dark);
 }
 
-.unread .notification-title {
-    font-weight: 800;
-    color: var(--primary-color);
+.unread-wrapper .notification-title {
+    font-weight: 700;
 }
 
 .notification-desc {
     font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     line-height: 1.5;
 }
 
@@ -223,42 +212,38 @@ body {
     font-size: 12px;
     color: var(--text-muted);
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }
 
 .unread-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: var(--primary-color);
     border-radius: 50%;
-    position: absolute;
-    top: 20px;
-    right: 55px;
-    /* បង្កើនចន្លោះដើម្បីទុកកន្លែងឲ្យប៊ូតុងលុប */
-}
-
-.action-btn-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    flex-shrink: 0;
+    margin-right: 10px;
 }
 
 /* Delete Button Styles */
 .delete-notification-btn {
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: var(--text-muted);
     padding: 8px;
     border-radius: 8px;
     transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 15px;
 }
 
 .delete-notification-btn:hover {
-    background: #fee2e2;
+    background: rgba(239, 68, 68, 0.15);
     color: #ef4444;
+}
+
+/* Modal Background Adaptability */
+.modal-content {
+    background-color: var(--bg-card);
+    color: var(--text-dark);
 }
