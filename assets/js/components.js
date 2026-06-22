@@ -495,13 +495,17 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <i class="bi bi-cart3"></i>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none cart-badge-count" style="font-size: 10px;">0</span>
                             </a>
+                            <a href="${basePath}pages/notifications.html" class="btn btn-light position-relative p-2 d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="${tr('notifications')}" style="border-radius: 8px; width: 38px; height: 38px;">
+                                <i class="bi bi-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none notifications-badge-count" style="font-size: 10px;">0</span>
+                            </a>
                             <div class="dropdown">
                                 <button class="btn btn-light border-0 p-2 text-muted bg-transparent" type="button" data-bs-toggle="dropdown" style="border-radius: 8px;">
                                     <i class="bi bi-globe me-1"></i> ${currentLang === 'km' ? 'KM' : 'EN'}
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2" style="border-radius: 12px; min-width: 120px;">
                                     <li><a class="dropdown-item ${currentLang === 'km' ? 'active' : ''}" href="#" onclick="changeLanguage('km')">ខ្មែរ (KM)</a></li>
-                                    <li><a class="dropdown-item ${currentLang === 'en' ? 'active' : ''}" href="#" onclick="changeLanguage('en')">English (EN)</a></li>
+                                    <li><a class="dropdown-item ${currentLang === 'en' ? 'active' : ''}" href="#" onclick="changeLanguage('en')">English (EN)</a></li>                                  
                                 </ul>
                             </div>
                             ${isLoggedIn ?

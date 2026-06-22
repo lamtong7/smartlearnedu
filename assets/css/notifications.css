@@ -35,7 +35,6 @@ body {
     background-color: var(--bg-dashboard);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 /* Fixed Navigation Sidebar */
 .dashboard-sidebar {
     width: var(--sidebar-width);
@@ -93,7 +92,7 @@ body {
 /* Workspace Container */
 .workspace-container {
     padding: 30px 40px;
-    max-width: 900px;
+    width: 1200px;
     margin: 0 auto;
 }
 
