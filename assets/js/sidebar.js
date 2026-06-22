@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
             { name: t("quizzes"), url: "quizzes.html", icon: "bi-question-square" },
             { name: t("certificates"), url: "certificates.html", icon: "bi-award" },
             { name: t("wishlist"), url: "wishlist.html", icon: "bi-heart" },
-            { name: t("notifications"), url: "notifications.html", icon: "bi-bell", badge: "3" }
+            // { name: t("notifications"), url: "notifications.html", icon: "bi-bell", badge: "3" }
         ];
 
         const bottomItems = [
