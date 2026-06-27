@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 180" role="img" aria-labelledby="title desc">
+  <title id="title">Smart Learn Code</title>
+  <desc id="desc">Horizontal Smart Learn Code logo.</desc>
+  <defs>
+    <linearGradient id="slcGradientH" x1="20" x2="760" y1="95" y2="95" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f75ff"/>
+      <stop offset="0.5" stop-color="#1685ff"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="slcDarkBlueH" x1="40" x2="135" y1="10" y2="75" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f3d82"/>
+      <stop offset="1" stop-color="#082b63"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(18 18)">
+    <path d="M36 52h86c12 0 22 10 22 22v46h-14V75c0-6-5-11-11-11H39c-6 0-11 5-11 11v45H14V74c0-12 10-22 22-22z" fill="url(#slcGradientH)"/>
+    <path d="M8 105c39 4 70 13 92 28-29-8-62-14-99-17l7-11z" fill="#0f75ff"/>
+    <path d="M150 105c-39 4-70 13-92 28 29-8 62-14 99-17l-7-11z" fill="#7c3aed"/>
+    <path d="M0 124c48 2 82 10 101 25 19-15 53-23 101-25l8 17c-55 4-89 13-104 28-3 3-8 3-11 0-15-15-49-24-104-28l9-17z" fill="url(#slcGradientH)"/>
+    <circle cx="101" cy="161" r="7" fill="#1720b7"/>
+    <path d="M48 30l53-27 53 27-53 26-53-26z" fill="url(#slcDarkBlueH)"/>
+    <path d="M70 51c21-9 41-9 62 0v24c-21-8-41-8-62 0V51z" fill="url(#slcDarkBlueH)"/>
+    <path d="M151 34v37" stroke="#082b63" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="151" cy="77" r="6" fill="#082b63"/>
+    <path d="M145 83h12l6 28h-24l6-28z" fill="#082b63"/>
+    <path d="M83 86l-16 16 16 16" fill="none" stroke="#0f75ff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M119 86l16 16-16 16" fill="none" stroke="#7c3aed" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M108 80l-14 44" fill="none" stroke="#4c45e8" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <text x="246" y="82" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="-1.5">
+    <tspan fill="#0b3b78">Smart </tspan><tspan fill="#1685ff">Learn </tspan><tspan fill="#7c3aed">Code</tspan>
+  </text>
+  <text x="250" y="124" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="5" fill="#15213d">
+    LEARN TODAY, CODE TOMORROW
+  </text>
+</svg>
